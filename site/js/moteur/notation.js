@@ -93,6 +93,13 @@
   // Partie du carnet : d'après les vérifications gardées dans le fichier ({ date, reussi, bien, total }).
   function noterPartieCarnet(donnees, partie, b) {
     const v = ((donnees.carnet && donnees.carnet.verifications) || {})[partie] || [];
+    const description = partieDe(partie);
+    if (description && !['classement', 'trous'].includes(description.type)) {
+      const niveau = donnees.evaluationsProf && donnees.evaluationsProf[partie];
+      if (![1, 2, 3, 4].includes(niveau)) return { fraction: 0, raisons: ['à évaluer par le professeur (hors du total en attendant)'], attenteEvaluation: true };
+      const mots = ['Non atteint', 'Partiellement atteint', 'Atteint', 'Dépassé'];
+      return { fraction: niveau / 4, raisons: [mots[niveau - 1] + ' (' + niveau + '/4)'], manuel: true };
+    }
     const premiere = v.findIndex((x) => x.reussi);
     if (premiere >= 0) {
       const echecs = premiere;
@@ -142,11 +149,11 @@
       const p = partieDe(partie);
       if (!p || !K().pourNiveau(p, niveau)) continue;
       const r = noterPartieCarnet(donnees, partie, b);
-      detail.push({ id: 'carnet:' + partie, carnet: true, partie, nom: nomPartie(partie), coef, attendu: true, ...r, points: r.fraction * coef });
+      detail.push({ id: 'carnet:' + partie, carnet: true, partie, nom: nomPartie(partie), coef, attendu: !r.attenteEvaluation, ...r, points: r.fraction * coef });
       obtenu += r.fraction * coef;
-      possible += coef;
+      if (!r.attenteEvaluation) possible += coef;
     }
-    const bonus = defis().filter((id) => donnees.exercices[id] && donnees.exercices[id].statut === 'reussi').length * (b.bonusDefi || 0);
+    const bonus = defis().filter((id) => (!b.defis || b.defis[id] !== false) && donnees.exercices[id] && donnees.exercices[id].statut === 'reussi').length * (b.bonusDefi || 0);
     const brute = possible ? (b.sur * obtenu) / possible : 0;
     const note = Math.min(b.sur, arrondir(brute + bonus, b.arrondi));
     // Points de chaque exercice ramenés sur la note (ex. 1,4 / 1,5 point).

@@ -175,8 +175,7 @@
       <h3>Barème de la note <span class="bareme-resume"></span></h3>
       <p class="bareme-explication">Pour chaque exercice : <strong>réussi</strong> = tous ses points, moins des retenues d’autonomie
         (indices ouverts et essais ratés <em>avant</em> la réussite) ; <strong>commencé sans réussir</strong> = une part des points ;
-        <strong>non commencé</strong> = 0. Le défi (exercice 8) donne un bonus. Ces réglages ne durent que le temps de la page :
-        pour les garder, modifiez <code>donnees/notation.js</code>.</p>
+        <strong>non commencé</strong> = 0. Le défi (exercice 8) donne un bonus. Les choix et les niveaux sont conservés sur ce navigateur. Exportez une sauvegarde pour les retrouver sur un autre poste.</p>
       <div class="bareme-reglages">
         <label>Note sur <input type="number" data-b="sur" min="1" max="100" step="1"></label>
         <label>Exercices attendus (les N premiers) <input type="number" data-b="objectif" min="1" max="20" step="1"></label>
@@ -193,10 +192,10 @@
         </label>
       </div>
       <div class="bareme-exemple-carnet" aria-live="polite"></div>
-      <p class="bareme-titre-coefs">Coefficients (0 = ne compte pas). Le carnet : les parties avec « Vérifier » sont notées comme la programmation
-        (retenues selon les réglages ci-dessus et le tableau explicatif) ; une partie propre à un niveau ne compte que pour ce niveau. Les autres parties ne sont pas
-        notées, mais leur travail est visible dans l’onglet « Carnet de projet » de chaque équipe.</p>
+      <p class="bareme-titre-coefs">Cochez « Noter » pour choisir ce qui compte. Un coefficient nul signifie « Non noté ». Les classements et les phrases à compléter sont corrigés automatiquement. Les autres parties se notent sur quatre niveaux dans le carnet de chaque équipe. Une partie propre à un niveau ne compte que pour ce niveau. Les contenus d’information à lire ne sont pas évalués.</p>
       <div class="bareme-coefs"></div>
+      <p class="evaluations-stockage" role="status"></p>
+      <div class="photos-actions"><button type="button" class="btn-secondaire btn-export-evaluations">Exporter mes évaluations</button><label class="btn-secondaire">Importer une sauvegarde<input class="import-evaluations" type="file" accept=".json,application/json" hidden></label></div>
       <button type="button" class="btn-secondaire btn-bareme-fichier">Revenir au barème du fichier</button>
     </section>
   </div>
@@ -213,12 +212,14 @@
 <script src="js/moteur/classe.js"></script>
 <script src="js/moteur/xlsx.js"></script>
 <script src="parcours/labyrinthe.js"></script>
+<script src="js/parcours-en-ligne.js"></script>
 <script src="donnees/notation.js"></script>
 <script src="donnees/carnet.js"></script>
 <script src="js/labyrinthe/modele.js"></script>
 <script src="js/labyrinthe/dessin.js"></script>
 <script src="js/icones.js"></script>
 <script src="js/prof-dessins.js"></script>
+<script src="js/notes-prof.js"></script>
 <script src="js/prof.js"></script>
 <script src="js/mise-a-jour.js"></script>
 </body>

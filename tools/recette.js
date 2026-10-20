@@ -47,6 +47,7 @@ const attendre = (ms) => new Promise((r) => setTimeout(r, ms));
 // Réglages du collège : la page lit aussi la version en ligne de Labo Blocs (seule adresse hors du site permise).
 // La recette ne dépend ni d'internet ni des classes publiées par le professeur : copie de secours et version
 // « en ligne » sont remplacées par des réglages d'essai fixes (5A à 5C, 4A à 4C, 3A) ; seul un appel marqué __recette passe tel quel.
+const ADRESSE_PARCOURS = 'https://anlito.github.io/labo-blocs/parcours/' + projet.parcours + '.labo-parcours.json';
 const ADRESSE_COLLEGE = 'https://anlito.github.io/labo-blocs/site/college.js';
 const COLLEGE_ESSAI = { format: 'labo-blocs/college', version: 1, classes: ['5A', '5B', '5C', '4A', '4B', '4C', '3A'], cheminClasse: ['Bureau', 'Classe', '{classe}', 'COMMUN', 'TECHNOLOGIE'] };
 const COLLEGE_LOCAL = `definirCollege(${JSON.stringify(COLLEGE_ESSAI)});`;
@@ -64,8 +65,10 @@ async function lancer(nav) {
   b.newPage = async () => {
     const p = await nouvellePage();
     await p.setRequestInterception(true);
-    p.on('request', (r) => (r.url().startsWith(ADRESSE_COLLEGE) ? r.respond({ status: 200, contentType: 'text/javascript', body: COLLEGE_LOCAL }) : r.continue()));
+    p.on('request', (r) => r.url().startsWith(ADRESSE_COLLEGE) ? r.respond({ status: 200, contentType: 'text/javascript', body: COLLEGE_LOCAL }) : r.url().startsWith(ADRESSE_PARCOURS) ? r.respond({status: 200, contentType: 'application/json', headers: {'access-control-allow-origin':'*'}, body: JSON.stringify(catalogue.paquet().brut)}) : r.continue());
     await p.evaluateOnNewDocument(collegeDEssai, COLLEGE_ESSAI);
+    const naviguer = p.goto.bind(p);
+    p.goto = async (...args) => { const r = await naviguer(...args); await p.evaluate(() => globalThis.Atelier && Atelier.parcoursPret); return r; };
     return p;
   };
   return b;
@@ -84,7 +87,7 @@ function surveiller(page, origine) {
   page.on('pageerror', (e) => s.erreurs.push(String(e.message || e)));
   page.on('request', (r) => {
     const u = r.url();
-    if (!u.startsWith(origine) && !u.startsWith('data:') && !u.startsWith('blob:') && !u.startsWith(ADRESSE_COLLEGE)) s.externes.push(u);
+    if (!u.startsWith(origine) && !u.startsWith('data:') && !u.startsWith('blob:') && !u.startsWith(ADRESSE_COLLEGE) && !u.startsWith(ADRESSE_PARCOURS)) s.externes.push(u);
   });
   return s;
 }
@@ -211,7 +214,7 @@ async function recetteNavigateur(nav, mode, base, origine) {
       noter('Réglages du collège : classes du niveau, mises à jour en ligne, dossier de l’équipe créé par l’atelier', contexte, r.ok, r.detail);
     }
 
-    noter('Aucune requête réseau hors du site', contexte, !s.externes.length, [...new Set(s.externes)].slice(0, 3).join(' '));
+    noter('Lectures extérieures limitées aux réglages et au parcours Labo Blocs', contexte, !s.externes.length, [...new Set(s.externes)].slice(0, 3).join(' '));
     noter('Aucune erreur dans la console', contexte, !s.erreurs.length, [...new Set(s.erreurs)].slice(0, 3).join(' | '));
   } catch (e) {
     noter('Recette interrompue', contexte, false, String(e.message || e));

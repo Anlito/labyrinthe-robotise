@@ -96,7 +96,7 @@ automatique). Firefox fonctionne pour le reste, mais « Enregistrer » y téléc
 
 ### La note
 
-Bouton « Barème » (le temps de la page) ou fichier `donnees/notation.js` (gardé). Par défaut, sur 20 :
+Bouton « Barème » : choix de notation, coefficients et niveaux conservés dans le navigateur du professeur. Exporter les évaluations fournit une sauvegarde à conserver dans son dossier personnel. Le fichier `donnees/notation.js` définit les valeurs de départ. Par défaut, sur 20 :
 
 - **coefficient par exercice** : 1 et 2 → 1 ; 3 et 4 → 1,5 ; 5 et 6 → 2 ; 7 (programme final) → 3 ;
 - **réussi** : tous ses points **du premier coup et sans indice** ; sinon −10 % par indice (au plus −30 %) et −5 % par
@@ -104,13 +104,44 @@ Bouton « Barème » (le temps de la page) ou fichier `donnees/notation.js` (gar
 - **défi (exercice 8) réussi** : +1 point (la note ne dépasse jamais 20) ;
 - **exercices attendus** : réglage « objectif » (0 = les 7), à augmenter au fil des séances ;
 - **carnet** : les parties avec « Vérifier » comptent (coefficient 1) : classement, chaînes, phrase, qui fait quoi, et
-  en 5e les branchements. Une partie d'un autre niveau ne compte jamais pour une équipe. Les autres parties ne sont
-  pas notées : leur travail est visible dans l'onglet « Carnet de projet ».
+  en 5e les branchements. Une partie d'un autre niveau ne compte jamais pour une équipe. Chaque partie peut être activée ou désactivée dans le barème. Les autres parties se notent manuellement : Non atteint (1/4), Partiellement atteint (2/4), Atteint (3/4), Dépassé (4/4). Tant que le professeur ne choisit pas de niveau, la partie reste hors du total.
 
 La grille de compétences du BO 2024 (C3 à C9, `Notation_Labyrinthe_Robotise.xlsx`) se remplit à côté : l'export
 Excel et le détail de chaque équipe (réponses, labyrinthe, câblage de 4e coché) servent d'appui.
 
+### Retrouver les photos des feuilles
+
+Dans la fiche d'une équipe : **Croquis et dessins → Plan du labyrinthe**, photographier ou importer l'image,
+puis **Enregistrer dans le dossier de l'équipe**. Les fichiers JPG restent séparés du JSON des élèves pour
+éviter les écrasements pendant leur travail. Ils ne sont jamais publiés sur GitHub.
+
+Côté élèves : **Conception → Notre labyrinthe sur papier → Retrouver les photos de notre équipe**, puis choisir
+le dossier de l'équipe (celui qui contient sa sauvegarde). Le site le vérifie, affiche les photos et peut le mémoriser.
+**Actualiser les photos** affiche les nouvelles prises de vue sans fermer le travail. Sans accès aux dossiers,
+**Ouvrir des photos…** permet de sélectionner les images. Sur un autre poste, rouvrir le même dossier réseau.
+Avec seulement des JSON importés dans l'outil professeur, la photo est téléchargée : il faut la déposer dans
+le dossier de l'équipe pour qu'elle soit retrouvée par les élèves.
+
+### Noter chaque partie ou la laisser non notée
+
+Dans **Barème**, chaque exercice et chaque partie du carnet possède une case **Noter** et un coefficient.
+Les contenus d'information restent non évalués. Le défi possède son propre choix de bonus.
+Les classements et les phrases à compléter restent automatiques. Pour les autres parties, activer **Noter**, puis
+ouvrir **équipe → Carnet de projet** et choisir un des quatre niveaux de maîtrise. Les choix et les niveaux sont
+conservés sur le poste professeur, sans écrire dans le JSON de l'équipe. Utiliser **Exporter mes évaluations**
+pour une sauvegarde durable, puis **Importer une sauvegarde** sur un autre poste. L'import fusionne les niveaux
+fournis avec ceux déjà présents et reprend le barème importé ; les niveaux déjà renseignés dans la sauvegarde remplacent ceux du poste.
+
 ### Mettre à jour les exercices
+
+**Sur le site en ligne**, à chaque ouverture, le parcours public « labyrinthe » est lu depuis Labo Blocs.
+Il faut **publier le parcours dans Labo Blocs** : une modification encore dans l'éditeur ne suffit pas.
+Une session déjà ouverte garde sa version jusqu'au rechargement. La dernière version compatible peut être
+mémorisée dans le navigateur. Sans connexion, la copie intégrée (ou la version mémorisée) reste utilisable.
+Si le nouveau parcours nécessite un moteur plus récent, l'outil professeur le signale et garde la version compatible :
+il faut alors mettre à jour le module partagé depuis le dépôt Labo Blocs, puis republier le projet.
+
+**Depuis le dossier réseau (`file://`)**, la copie intégrée sert et la mise à jour reste volontaire :
 
 Les exercices viennent de **Labo Blocs** : le site en garde une copie, `parcours/labyrinthe.js`. Bouton
 **« Exercices »** de `prof.html` : « Chercher en ligne » ou « Choisir un fichier… » (`labyrinthe-….labo-parcours.json`),

@@ -45,6 +45,7 @@
     const ONGLETS = A.ongletsCarnet(C, niveau);
     const ui = { onglet: ONGLETS.length ? ONGLETS[0].cle : null, choisi: null, revoir: {}, retour: {}, aideColonne: null };
     const graine = A.nomEquipe(D.equipe.eleves);
+    let fermerPhotos = null;
     let labyrinthe = null; // module « Mon labyrinthe » posé dans l'onglet Conception
 
     A.poserIcones(racine);
@@ -104,7 +105,13 @@
       const zone = $('.carnet-contenu', racine);
       if (labyrinthe) labyrinthe.demonter();
       labyrinthe = null;
+      if (fermerPhotos) fermerPhotos();
+      fermerPhotos = null;
       zone.innerHTML = o ? o.parties.map(partieHtml).join('') : '';
+      if (o && o.cle === 'conception' && A.photos) {
+        const photos = document.createElement('section'); photos.className = 'carte-carnet photos-eleves'; zone.prepend(photos);
+        fermerPhotos = A.photos.monter(photos, session);
+      }
       poserLabyrinthe(zone);
       if (nouvelOnglet) racine.scrollTop = 0;
     }

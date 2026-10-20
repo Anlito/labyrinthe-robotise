@@ -122,6 +122,7 @@
 <script src="js/moteur/progression.js"></script>
 <!-- Exercices (parcours de Labo Blocs, mis à jour depuis l'outil du professeur) et données du projet -->
 <script src="parcours/labyrinthe.js"></script>
+<script src="js/parcours-en-ligne.js"></script>
 <script src="donnees/classes.js"></script>
 <script src="donnees/carnet.js"></script>
 <!-- « Mon labyrinthe » : dessiner le plateau et l’essayer (onglet Conception du carnet) -->
@@ -132,6 +133,7 @@
 <!-- Interface -->
 <script src="js/icones.js"></script>
 <script src="js/fichiers.js"></script>
+<script src="js/photos-eleves.js"></script>
 <script src="js/accueil.js"></script>
 <script src="js/session.js"></script>
 <script src="js/exercices.js"></script>
@@ -139,7 +141,8 @@
 <script>
   Atelier.ajusterEchelle();
   addEventListener('resize', Atelier.ajusterEchelle);
-  (function () {
+  (async function () {
+    await Atelier.parcoursPret;
     var q = new URLSearchParams(location.search);
     // Programme d'une équipe ouvert depuis l'outil professeur (prof.html).
     if (q.has('revue')) {

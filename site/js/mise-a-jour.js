@@ -8,10 +8,11 @@
 //
 // Le travail des élèves est protégé par Labo Blocs à l'ouverture de leur fichier : blocs gardés, réussites gardées,
 // un exercice réussi qui a changé est marqué « modifié, à revérifier ».
-(function (global) {
+(async function (global) {
   'use strict';
 
   const A = global.Atelier;
+  await A.parcoursPret;
   const LB = global.LaboBlocs;
   const $ = (sel, racine) => (racine || document).querySelector(sel);
   const $$ = (sel, racine) => [...(racine || document).querySelectorAll(sel)];
@@ -329,7 +330,7 @@
 
   function majAccueil() {
     const p = actuel();
-    $('.prof-exercices-version').textContent = `Exercices : version ${p.versionParcours} (${pluriel(p.exercices.length, 'exercice')}).`;
+    $('.prof-exercices-version').textContent = `Exercices : version ${p.versionParcours} (${pluriel(p.exercices.length, 'exercice')}) · ${A.origineParcours || 'copie intégrée'}.${A.messageParcoursEnLigne ? ' ' + A.messageParcoursEnLigne : ''}`;
   }
 
   $('.pb-exercices').addEventListener('click', ouvrir);

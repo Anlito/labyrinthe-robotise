@@ -11,6 +11,7 @@
     const s = {
       donnees: options.donnees,
       handle: options.handle || null,
+      dossier: options.dossier || null,
       lecture: !!options.lecture,
       nonEnregistre: false,
       dernierEnregistrement: null,

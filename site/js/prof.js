@@ -1,9 +1,10 @@
 // Outil professeur : accueil (choix de la classe), vue Classe (résumé, alertes, tableau), vue Équipe (onglets),
 // suivi en direct du dossier de la classe, barème réglable, exports.
-(function (global) {
+(async function (global) {
   'use strict';
 
   const A = global.Atelier;
+  await A.parcoursPret;
   const LB = global.LaboBlocs;
   const $ = (sel, racine) => (racine || document).querySelector(sel);
   const $$ = (sel, racine) => [...(racine || document).querySelectorAll(sel)];
@@ -19,7 +20,8 @@
   let manuels = []; // { nom, texte } : fichiers glissés ou choisis à la main
   let fichiersDossier = []; // fichiers lus dans le dossier de la classe (relus en direct)
   let fichiers = []; // les deux réunis
-  let bareme = A.completerBareme(A.bareme);
+  let bareme = A.completerBareme(A.notesProf.bareme() || A.bareme);
+  for (const p of A.partiesSuivies(A.carnet, null)) if (!(p.id in bareme.carnet)) bareme.carnet[p.id] = 0;
   let fusion = { equipes: [], invalides: [] };
   let misesAJour = new Set();
 
@@ -52,6 +54,7 @@
       d.modifieLe + '|' + Object.values(d.exercices).map((e) => `${e.statut}:${e.tentatives}:${e.indicesOuverts}`).join(',');
     const avant = new Map(fusion.equipes.map((e) => [e.cle, signature(e.donnees)]));
     fusion = A.fusionnerEquipes(fichiers);
+    for (const eq of fusion.equipes) Object.defineProperty(eq.donnees, 'evaluationsProf', { value: A.notesProf.pour(eq.donnees), configurable: true, enumerable: false });
     // Équipes qui ont avancé depuis la dernière lecture (signalées dans le tableau).
     misesAJour = new Set(fusion.equipes.filter((e) => avant.has(e.cle) && avant.get(e.cle) !== signature(e.donnees)).map((e) => e.cle));
     if (!fusion.equipes.length && !fichiers.length) {
@@ -570,6 +573,12 @@
     return '';
   }
 
+  function evaluationManuelleHtml(d, p) {
+    if (['classement', 'trous'].includes(p.type) || !(bareme.carnet[p.id] > 0)) return '';
+    const n = A.notesProf.pour(d)[p.id];
+    return `<label class="note-maitrise">Niveau de maîtrise (coefficient ${bareme.carnet[p.id]}) <select data-note-manuelle="${echapper(p.id)}"><option value="">À évaluer</option>` +
+      ['Non atteint', 'Partiellement atteint', 'Atteint', 'Dépassé'].map((mot, i) => `<option value="${i + 1}"${n === i + 1 ? ' selected' : ''}>${mot} · ${i + 1}/4</option>`).join('') + '</select></label><p class="pe-aide">Sans niveau choisi, cette partie reste hors du total. Les niveaux et les choix sont sauvegardés sur ce poste professeur ; exportez vos évaluations pour les conserver ailleurs.</p>';
+  }
   // Onglet « Carnet de projet » : chaque partie du niveau de l'équipe, son état, son travail et ses points.
   function carnetHtml(d, note) {
     const C = A.carnet || { parties: [] };
@@ -592,7 +601,7 @@
       const travail = etat === 'a_faire' && !verifs(p.id) ? '' : verifs(p.id) + reponsesHtml(K, p);
       h += `<article class="pe-partie etat-${etat}"><header><h4>${echapper(p.titre)}</h4>` +
         `<span class="pe-etat">${mot[etat]}</span><span class="pe-points">${points(p.id)}</span></header>` +
-        `<div class="pe-partie-corps">${travail || '<p class="pe-vide">Pas encore de travail.</p>'}</div></article>`;
+        `<div class="pe-partie-corps">${evaluationManuelleHtml(d, p)}${travail || '<p class="pe-vide">Pas encore de travail.</p>'}</div></article>`;
     }
     return h + '</section>';
   }
@@ -810,7 +819,16 @@
     };
   }
 
-  $('.pe-onglets').addEventListener('click', (e) => {
+  $('.vue-equipe').addEventListener('change', (e) => {
+    const id = e.target.dataset.noteManuelle;
+    if (!id) return;
+    const eq = fusion.equipes.find(x => x.cle === vue.equipe);
+    if (!eq) return;
+    const ok = A.notesProf.noter(eq.donnees, id, e.target.value);
+    $('.evaluations-stockage').textContent = ok ? 'Évaluations enregistrées sur ce navigateur. Pensez à exporter une sauvegarde.' : 'Stockage indisponible : exportez vos évaluations avant de fermer la page.';
+    recalculer();
+  });
+  $('.pe-onglets').addEventListener('click' , (e) => {
     const b = e.target.closest('[data-onglet]');
     if (!b) return;
     vue.onglet = b.dataset.onglet;
@@ -891,13 +909,14 @@
 
   const zoneBareme = $('.prof-bareme');
   const partieCarnet = (id) => A.partieCarnet(A.carnet, id) || { titre: id };
-  $('.bareme-coefs').innerHTML =
-    A.exercicesObligatoires()
-      .map((id) => `<label title="${echapper(titre(id))}">Ex. ${id} <input type="number" data-coef="${id}" min="0" max="10" step="0.5"></label>`)
-      .join('') +
-    Object.keys(bareme.carnet)
-      .map((p) => `<label>Carnet · ${echapper(partieCarnet(p).titre)}${partieCarnet(p).niveaux ? ` (${partieCarnet(p).niveaux.join(', ')}e)` : ''} <input type="number" data-coef-carnet="${p}" min="0" max="10" step="0.5"></label>`)
-      .join('');
+  function dessinerChoixNotation() {
+    const choix = (type, id, titre, coef, mode) => `<div class="choix-notation"><label><input type="checkbox" data-noter="${type}" data-id="${echapper(id)}"${coef > 0 ? ' checked' : ''}> Noter · ${echapper(titre)}</label><span>${mode}</span><label>Coefficient <input type="number" data-${type === 'carnet' ? 'coef-carnet' : 'coef'}="${echapper(id)}" value="${coef}" min="0" max="10" step="0.5"${coef > 0 ? '' : ' disabled'}></label></div>`;
+    $('.bareme-coefs').innerHTML = '<h4>Programmation</h4>' + A.exercicesObligatoires().map(id => choix('exercice', id, 'Ex. ' + id + ' · ' + titre(id), bareme.coefficients[id], 'Automatique')).join('') +
+      A.exercicesDefis().map(id => `<label class="choix-defi"><input type="checkbox" data-noter-defi="${id}"${!bareme.defis || bareme.defis[id] !== false ? ' checked' : ''}> Noter le défi ${id} en bonus</label>`).join('') +
+      '<h4>Carnet de projet</h4>' + A.partiesSuivies(A.carnet, null).map(p => choix('carnet', p.id, p.titre + (p.niveaux ? ' (' + p.niveaux.join(', ') + 'e)' : ''), bareme.carnet[p.id] || 0, ['classement', 'trous'].includes(p.type) ? 'Automatique' : 'Maîtrise sur 4')).join('') +
+      '<p>Les pages d’information à lire ne sont pas évaluées.</p>';
+  }
+  dessinerChoixNotation();
   function remplirBareme() {
     for (const el of zoneBareme.querySelectorAll('[data-b]')) {
       const v = bareme[el.dataset.b];
@@ -905,6 +924,7 @@
     }
     for (const el of zoneBareme.querySelectorAll('[data-coef]')) el.value = bareme.coefficients[el.dataset.coef];
     for (const el of zoneBareme.querySelectorAll('[data-coef-carnet]')) el.value = bareme.carnet[el.dataset.coefCarnet];
+    dessinerChoixNotation();
     resumerBareme();
   }
   function expliquerCarnet() {
@@ -920,14 +940,14 @@
     let h = '<h4>Comment les vérifications du carnet comptent-elles ?</h4>' +
       '<p>Une tentative correspond à un clic sur <strong>« Vérifier » pour toute la partie</strong>, même si plusieurs réponses sont à revoir. Seules les vérifications ratées <strong>avant la première réussite</strong> entraînent une retenue. La vérification réussie et les clics suivants n’enlèvent aucun point.</p>' +
       `<p>Réglage actuel : ${bareme.essaisGratuits} vérification(s) ratée(s) sans retenue, puis <strong>−${pct(bareme.penaliteEchec)} des points de cette partie</strong> par échec supplémentaire, au maximum <strong>−${pct(bareme.penaliteEchecMax)}</strong>. Les mêmes réglages s’appliquent au carnet et à la programmation. Les indices concernent uniquement la programmation.</p>` +
-      `<p><strong>Exemple réel, partie de coefficient 1 :</strong> elle vaut ${A.nombreFr(p5, 2)} point(s) en 5e et ${A.nombreFr(p4, 2)} point(s) en 4e, avant l’arrondi de la note finale. Ces valeurs suivent les coefficients et l’objectif choisis.</p>` +
+      `<p><strong>Exemple théorique, partie de coefficient 1 :</strong> elle vaut ${A.nombreFr(p5, 2)} point(s) en 5e et ${A.nombreFr(p4, 2)} point(s) en 4e, si toutes les parties cochées sont déjà évaluées, avant l’arrondi de la note finale. Une partie manuelle encore « À évaluer » reste hors du total de l’équipe. Ces valeurs suivent les coefficients et l’objectif choisis.</p>` +
       '<div class="table-defile"><table class="bareme-table-exemple"><thead><tr><th>Première réussite</th><th>Vérifications ratées avant</th><th>Retenue sur cette partie</th><th>Points conservés</th><th>Points en 5e / en 4e</th></tr></thead><tbody>';
     for (let t = 1; t <= 7; t++) {
       const r = retenue(echecsPour(t));
       h += `<tr><th>${t === 1 ? '1er clic' : t + 'e clic'}</th><td>${t - 1}</td><td>−${pct(r)}</td><td>${pct(1 - r)}</td><td>${A.nombreFr(p5 * (1 - r), 2)} / ${A.nombreFr(p4 * (1 - r), 2)}</td></tr>`;
     }
     h += '</tbody></table></div>' +
-      `<p><strong>Pas encore réussi :</strong> après au moins une vérification, la partie rapporte ${pct(bareme.participation)} de ses points (participation). Sans vérification : 0. Les parties non notées et celles d’un autre niveau ne comptent pas.</p>` +
+      `<p><strong>Parties corrigées automatiquement, pas encore réussies :</strong> après au moins une vérification, la partie rapporte ${pct(bareme.participation)} de ses points (participation). Sans vérification : 0. Les parties non notées et celles d’un autre niveau ne comptent pas.</p>` +
       '<p>Pour supprimer les pertes liées aux tentatives, réglez « Retenue par vérification ratée supplémentaire » sur 0 %. Pour autoriser un premier essai sans perte, réglez « Vérifications ratées sans retenue » sur 1.</p>';
     $('.bareme-exemple-carnet').innerHTML = h;
   }
@@ -940,23 +960,44 @@
       `commencé : ${Math.round(bareme.participation * 100)} %, bonus par défi : +${A.nombreFr(bareme.bonusDefi)}`;
   }
   function apresBareme() {
+    const ok = A.notesProf.regler(bareme);
+    $('.evaluations-stockage').textContent = ok ? 'Barème conservé sur ce navigateur. Exportez vos évaluations pour les sauvegarder.' : 'Stockage indisponible : exportez vos évaluations.';
     resumerBareme();
     dessiner();
     if (vue.nom === 'equipe') dessinerEquipe(true);
   }
   zoneBareme.addEventListener('input', (e) => {
     const el = e.target;
+    if (el.dataset.noter) {
+      const coefs = el.dataset.noter === 'carnet' ? bareme.carnet : bareme.coefficients;
+      coefs[el.dataset.id] = el.checked ? (coefs[el.dataset.id] || 1) : 0;
+      dessinerChoixNotation(); apresBareme(); return;
+    }
+    if (el.dataset.noterDefi) { bareme.defis = Object.assign({}, bareme.defis, { [el.dataset.noterDefi]: el.checked }); apresBareme(); return; }
     const v = Number(el.value);
-    if (el.value === '' || !Number.isFinite(v) || v < 0) return;
+    if (el.value === '' || !Number.isFinite(v) || v < 0 || (el.type === 'number' && !el.checkValidity())) return;
     if (el.dataset.coef) bareme.coefficients[el.dataset.coef] = v;
     else if (el.dataset.coefCarnet) bareme.carnet[el.dataset.coefCarnet] = v;
     else if (el.dataset.b) bareme[el.dataset.b] = el.hasAttribute('data-pourcent') ? v / 100 : v;
+    if ((el.dataset.coef || el.dataset.coefCarnet) && v === 0) dessinerChoixNotation();
     apresBareme();
   });
   $('.btn-bareme-fichier').addEventListener('click', () => {
     bareme = A.completerBareme(A.bareme);
+    for (const p of A.partiesSuivies(A.carnet, null)) if (!(p.id in bareme.carnet)) bareme.carnet[p.id] = 0;
     remplirBareme();
     apresBareme();
+  });
+  $('.btn-export-evaluations').addEventListener('click', () => {
+    A.notesProf.regler(bareme);
+    const url = URL.createObjectURL(new Blob([A.notesProf.texte()], {type:'application/json'}));
+    const a = document.createElement('a'); a.href = url; a.download = 'labyrinthe-evaluations-prof.json'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 2000);
+  });
+  $('.import-evaluations').addEventListener('change', async e => {
+    const fichier = e.target.files[0]; if (!fichier) return;
+    try { const ok = A.notesProf.importer(await fichier.text()); bareme = A.completerBareme(A.notesProf.bareme()); for (const p of A.partiesSuivies(A.carnet, null)) if (!(p.id in bareme.carnet)) bareme.carnet[p.id] = 0; remplirBareme(); recalculer(); $('.evaluations-stockage').textContent = ok ? 'Évaluations et barème importés.' : 'Importés en mémoire seulement : exportez avant de fermer.'; }
+    catch (err) { $('.evaluations-stockage').textContent = err.message || 'La sauvegarde ne peut pas être importée.'; }
+    e.target.value = '';
   });
   remplirBareme();
   montrerVue('accueil');

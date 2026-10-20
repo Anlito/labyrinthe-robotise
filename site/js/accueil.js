@@ -18,6 +18,7 @@
   function demarrer(commencer) {
     const racine = $('.ecran-accueil');
     racine.hidden = false;
+    let dossierEquipe = null;
     let equipe = null; // { eleves, classe, nom }
 
     for (const el of racine.querySelectorAll('[data-icone]')) el.outerHTML = A.icone(el.dataset.icone, { epaisseur: el.dataset.epaisseur });
@@ -183,6 +184,7 @@
     }
 
     async function valider(dossier, note) {
+      dossierEquipe = dossier;
       const nom = equipe.nom + '.json';
       // Ne jamais écraser une sauvegarde qui existe déjà : on propose de l'ouvrir.
       const existante = await F.sauvegardeExistante(dossier, nom);
@@ -233,7 +235,8 @@
       F.memoriserHandle(handle);
       F.sauverSecours(donnees);
       racine.hidden = true;
-      commencer({ donnees, handle });
+      if (dossierEquipe && A.photos) A.photos.memoriserDossier(donnees, dossierEquipe);
+      commencer({ donnees, handle, dossier: dossierEquipe });
     }
 
     montrer('choix');
