@@ -107,7 +107,8 @@
       labyrinthe = null;
       if (fermerPhotos) fermerPhotos();
       fermerPhotos = null;
-      zone.innerHTML = o ? o.parties.map(partieHtml).join('') : '';
+      zone.classList.toggle('revision-page', !!o && o.cle === 'retenir');
+      zone.innerHTML = o ? (o.cle === 'retenir' ? introductionRevision(o.parties) : '') + o.parties.map(partieHtml).join('') : '';
       if (o && o.cle === 'conception' && A.photos) {
         const photos = document.createElement('section'); photos.className = 'carte-carnet photos-eleves'; zone.prepend(photos);
         fermerPhotos = A.photos.monter(photos, session);
@@ -119,6 +120,10 @@
     // ---------- Parties ----------
 
     function entete(p, h) {
+      if (p.id.startsWith('retenir-')) {
+        const numero = C.parties.filter(x => x.id.startsWith('retenir-')).findIndex(x => x.id === p.id) + 1;
+        return `<section class="carte-carnet revision-section" data-partie="${p.id}"><h2 id="revision-${p.id}" tabindex="-1"><span class="revision-numero">${String(numero).padStart(2, '0')}</span>${echapper(p.titre)}</h2>${h}</section>`;
+      }
       const etat = A.etatPartie(K, p);
       return (
         `<section class="carte-carnet partie-${p.type}${p.encadre ? ' encadre-' + p.encadre : ''}" data-partie="${p.id}">` +
@@ -134,7 +139,31 @@
     }
 
     function info(p) {
+      if (p.id.startsWith('retenir-')) return ficheRevision(p);
       return `<ul class="info-lignes">${(p.lignes || []).map((l) => `<li>${echapper(l)}</li>`).join('')}</ul>` + (p.schemaChaines ? schemaChaines() : '');
+    }
+
+    function introductionRevision(parties) {
+      const noms = ['Les deux chaînes', 'Les composants', 'Programmer', 'Ré-étalonner', 'La sécurité', 'Les matériaux'];
+      return '<header class="revision-intro"><p class="revision-surtitre">FICHE DE RÉVISION</p><h2>Les idées essentielles du projet</h2><p>Relis une notion à la fois. Les mots en gras et les exemples t’aident à expliquer le fonctionnement du labyrinthe.</p></header>' +
+        '<nav class="revision-sommaire" aria-label="Notions à retenir">' + parties.map((p, i) => `<a href="#revision-${p.id}"><span>${String(i + 1).padStart(2, '0')}</span>${noms[i] || echapper(p.titre)}</a>`).join('') + '</nav>';
+    }
+    function ficheRevision(p) {
+      const notion = (ligne) => {
+        const i = ligne.indexOf(' : ');
+        if (i > 0 && i < 60) return `<div class="revision-notion"><h3>${echapper(ligne.slice(0, i))}</h3><p>${echapper(ligne.slice(i + 3))}</p></div>`;
+        return `<p class="revision-paragraphe">${echapper(ligne)}</p>`;
+      };
+      if (p.id === 'retenir-chaines') {
+        const lignes = p.lignes || [];
+        return '<div class="revision-deux-chaines"><section class="revision-information"><h3>La chaîne d’information</h3><p class="revision-role">Recevoir des informations et décider quoi faire.</p><p class="revision-etapes">Acquérir <span>→</span> Traiter <span>→</span> Communiquer</p>' +
+          lignes.slice(1, -1).map(notion).join('') + '</section><section class="revision-energie"><h3>La chaîne d’énergie</h3><p class="revision-role">Fournir et transformer l’énergie pour réaliser l’action.</p><p class="revision-etapes">Alimenter <span>→</span> Distribuer <span>→</span> Convertir <span>→</span> Transmettre</p>' +
+          '<dl class="revision-fonctions"><dt>Alimenter</dt><dd>Le câble USB apporte l’énergie électrique.</dd><dt>Distribuer</dt><dd>L’électronique des servomoteurs commande l’énergie envoyée aux moteurs.</dd><dt>Convertir</dt><dd>Les moteurs transforment l’énergie électrique en mouvement.</dd><dt>Transmettre</dt><dd>Les liaisons mécaniques transmettent le mouvement au plateau.</dd></dl><p class="revision-exemple"><strong>Action obtenue :</strong> le plateau s’incline et la bille se déplace.</p></section></div>' +
+          '<p class="revision-lien"><strong>Le lien entre les deux :</strong> la chaîne d’information envoie un ordre de commande à la chaîne d’énergie.</p>';
+      }
+      if (p.id === 'retenir-etalonnage') return '<div class="revision-conversion"><div><strong>0 à 1023</strong><span>valeur du joystick</span></div><span aria-hidden="true">→</span><div><strong>0° à 180°</strong><span>angle du servomoteur</span></div></div>' +
+        '<p class="revision-exemple"><strong>Exemple au centre :</strong> une valeur proche de 512 correspond à 90°.</p>' + (p.lignes || []).slice(1).map(notion).join('');
+      return '<div class="revision-notions">' + (p.lignes || []).map(notion).join('') + '</div>';
     }
 
     // Structure fonctionnelle : https://eduscol.education.fr/document/17425/download

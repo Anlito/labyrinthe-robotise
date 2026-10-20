@@ -203,7 +203,7 @@ definirCarnet({
         "Acquérir : c’est le rôle d’un CAPTEUR. Il transforme une grandeur physique (position, lumière, distance…) en un signal que la carte peut lire. Ici, le joystick capte la position que tu lui donnes.",
         "Traiter : c’est le rôle de la CARTE PROGRAMMABLE. Elle exécute le programme et décide. Ici, l’Arduino lit la position du joystick, la range dans une variable et calcule l’angle des servomoteurs.",
         "Communiquer : la carte envoie un ORDRE à un actionneur, ou une INFORMATION à un humain (écran, LED, son). Ici, l’ordre d’angle aux servomoteurs.",
-        "Chaîne d’énergie : ALIMENTER → DISTRIBUER → AGIR. Le câble USB alimente, les fils distribuent le courant, les servomoteurs agissent en inclinant le plateau."
+        "Chaîne d’énergie : ALIMENTER → DISTRIBUER → CONVERTIR → TRANSMETTRE. L’énergie électrique arrive par le câble USB ; l’électronique des servomoteurs commande les moteurs, qui la transforment en mouvement transmis au plateau."
       ] },
     { "id": "retenir-familles", "type": "info", "titre": "Les 3 familles de composants",
       "lignes": [

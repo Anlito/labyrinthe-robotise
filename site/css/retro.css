@@ -188,3 +188,46 @@ a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visib
 @media (max-width: 680px) { .choix-notation { grid-template-columns: 1fr auto; } .choix-notation > label:first-child { grid-column: 1 / -1; } }
 
 #parcours-chargement { position: fixed; z-index: 9999; inset: 0; margin: 0; display: grid; place-content: center; background: #1A1A2E; color: #FFD60A; font: 700 1.25rem var(--titres); }
+
+/* Fiche « À retenir » : lecture par notions, exemples distincts et repères stables. */
+.revision-page { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+.revision-intro, .revision-sommaire, .revision-section[data-partie="retenir-chaines"] { grid-column: 1 / -1; }
+.revision-intro { padding: 1.5rem 1.75rem; background: var(--retro-nuit); color: #EEEEFA; border-top: 0.3rem solid var(--retro-jaune); }
+.revision-intro .revision-surtitre { margin: 0 0 0.5rem; color: #91C7FF; font-size: 0.8125rem; letter-spacing: 0.1em; font-weight: 700; }
+.revision-intro h2 { color: var(--retro-jaune); margin: 0 0 0.75rem; font-size: 1.65rem; }
+.revision-intro > p:last-child { margin: 0; max-width: 65ch; line-height: 1.65; }
+.revision-sommaire { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.625rem; }
+.revision-sommaire a { display: flex; align-items: center; gap: 0.625rem; padding: 0.75rem; min-height: 3rem; color: var(--bleu-fonce); background: #FFFFFF; border: 1px solid var(--bord); text-decoration: none; font-weight: 700; }
+.revision-sommaire a:hover { background: var(--bleu-pale); border-color: var(--bleu); }
+.revision-sommaire a > span { color: var(--texte-2); font-size: 0.8125rem; }
+.revision-page .revision-section { margin: 0; padding: 1.25rem 1.5rem; }
+.revision-section > h2 { display: flex; align-items: baseline; gap: 0.75rem; font-size: 1.25rem; line-height: 1.4; margin-bottom: 1.25rem; scroll-margin-top: 7rem; }
+.revision-numero { color: var(--bleu-fonce); font: 700 0.9375rem var(--police); flex: none; }
+.revision-section h3 { margin: 0 0 0.45rem; font-size: 1.0625rem; line-height: 1.45; color: var(--bleu-fonce); }
+.revision-section p, .revision-section dd { line-height: 1.7; font-size: 1rem; }
+.revision-notion + .revision-notion { border-top: 1px solid var(--bord); padding-top: 1rem; margin-top: 1rem; }
+.revision-notion p { margin: 0; }
+.revision-paragraphe { margin: 0 0 1rem; }
+.revision-paragraphe:last-child { margin-bottom: 0; }
+.revision-deux-chaines { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.5rem; }
+.revision-information, .revision-energie { min-width: 0; padding: 1rem; border-top: 4px solid var(--retro-bleu); background: #F1F7FF; }
+.revision-energie { background: #FFF7E8; border-color: var(--retro-orange); }
+.revision-energie h3 { color: #7B4F00; }
+.revision-role { margin: 0 0 0.75rem; }
+.revision-etapes { margin: 0 0 1.25rem; font-weight: 700; color: var(--encre); }
+.revision-etapes span { color: #66667E; }
+.revision-fonctions { margin: 0; }
+.revision-fonctions dt { font-weight: 700; margin-top: 0.875rem; color: #7B4F00; }
+.revision-fonctions dd { margin: 0.25rem 0 0; }
+.revision-lien, .revision-exemple { padding: 0.75rem 1rem; background: #E8F4FF; border-left: 4px solid var(--bleu); }
+.revision-lien { margin: 1.25rem 0 0; }
+.revision-energie .revision-exemple { background: #FFFFFF; border-color: #A85B00; }
+.revision-conversion { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 1rem; background: var(--bleu-pale); }
+.revision-conversion > div { display: grid; gap: 0.4rem; }
+.revision-conversion strong { font-size: 1.35rem; color: var(--bleu-fonce); }
+.revision-conversion div span { font-size: 0.8125rem; }
+.revision-section[data-partie="retenir-securite"] { border-top-color: var(--retro-orange); }
+.revision-section[data-partie="retenir-materiaux"] { border-top-color: var(--retro-vert); }
+@media (max-width: 800px) { .revision-page, .revision-deux-chaines { grid-template-columns: minmax(0, 1fr); } .revision-sommaire { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 440px) { .revision-page .revision-section { padding: 1rem; } .revision-intro { padding: 1.25rem; } .revision-sommaire { grid-template-columns: 1fr; } }
+@media print { .revision-page { display: block; } .revision-sommaire { display: none; } .revision-section { break-inside: avoid; margin-bottom: 1rem !important; } .revision-intro { background: white; color: black; } .revision-intro h2 { color: black; } }
