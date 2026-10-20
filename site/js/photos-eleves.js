@@ -19,21 +19,25 @@
     const r = A.lireSauvegarde(await (await h.getFile()).text());
     return r.ok && cle(r.donnees) === cle(session.donnees);
   }
-  function monter(zone, session) {
+  function monter(zone, session, options) {
+    const o = options || {};
     let actif = true, dossier = session.dossier || null, urls = [], lecture = 0;
-    zone.innerHTML = '<h3>Notre labyrinthe sur papier</h3><p>Ton professeur peut photographier votre feuille dans « Croquis et dessins ». Retrouve ici les photos rangées dans le dossier de ton équipe. Tu peux utiliser le dessin sur papier ou le concepteur du site.</p>' +
-      '<div class="photos-actions"><button type="button" class="btn-secondaire photos-ouvrir">Retrouver les photos de notre équipe</button><button type="button" class="btn-secondaire photos-actualiser" hidden>Actualiser les photos</button>' +
+    zone.innerHTML = '<h3>' + echapper(o.titre || 'Les photos de notre labyrinthe') + '</h3><p>' + (o.type ? 'Ton professeur choisit le type « ' + (o.type === 'Croquis' ? 'Croquis' : 'Dessin technique') + ' » pour photographier la feuille. Retrouve ici les photos correspondantes, rangées dans le dossier de votre équipe.' : 'Retrouve ici les photos de votre labyrinthe, vos croquis et vos dessins techniques enregistrés par le professeur. Tu peux utiliser le dessin sur papier ou le concepteur du site.') + '</p>' +
+      '<div class="photos-actions"><button type="button" class="btn-secondaire photos-ouvrir">Retrouver les photos de notre équipe</button><button type="button" class="btn-secondaire photos-actualiser">Actualiser les photos</button>' +
       '<label class="btn-secondaire photos-importer">Ouvrir des photos…<input type="file" accept="image/jpeg,image/png,image/webp" multiple hidden></label></div><p class="photos-etat" role="status"></p><div class="photos-galerie"></div>';
     const $ = s => zone.querySelector(s);
     function liberer() { urls.forEach(u => URL.revokeObjectURL(u)); urls = []; }
     function message(s) { if (actif) $('.photos-etat').textContent = s; }
-    function afficher(fichiers) {
+    function afficher(fichiers, filtrer) {
+      if (o.type && filtrer !== false) fichiers = fichiers.filter(f => f.name.toLowerCase().startsWith(o.type.toLowerCase() + '_'));
       if (!actif) return; liberer();
       $('.photos-galerie').innerHTML = fichiers.map(f => { const url = URL.createObjectURL(f); urls.push(url); return `<figure><a href="${url}" target="_blank" rel="noopener"><img src="${url}" alt="Photo de la feuille : ${echapper(f.name)}" loading="lazy"></a><figcaption>${echapper(f.name)}</figcaption></figure>`; }).join('');
-      message(fichiers.length ? `${fichiers.length} photo(s). Clique sur une photo pour l’agrandir.` : 'Pas encore de photo dans le dossier. Clique sur « Actualiser les photos » après l’enregistrement par ton professeur.');
+      message(fichiers.length ? `${fichiers.length} photo(s). Clique sur une photo pour l’agrandir.` : 'Pas encore de photo pour ce document. Ton professeur doit choisir le bon type de feuille et l’enregistrer dans votre dossier. Clique ensuite sur « Actualiser les photos ».');
     }
     async function actualiser() {
-      if (!dossier || !actif) return;
+      dossier = dossier || session.dossier;
+      if (!actif) return;
+      if (!dossier) { message('Clique d’abord sur « Retrouver les photos de notre équipe » et ouvre le dossier contenant votre sauvegarde et les images.'); return; }
       const numero = ++lecture;
       try {
         if (dossier.queryPermission && await dossier.queryPermission({mode:'read'}) !== 'granted') { message('Clique sur « Retrouver les photos » pour autoriser la lecture du dossier.'); return; }
@@ -49,13 +53,16 @@
         const choisi = await showDirectoryPicker({id:A.projet.id+'-photos',mode:'read'});
         if (!await verifierDossier(choisi, session)) { message('Ce dossier ne contient pas votre sauvegarde. Choisis le dossier de ton équipe.'); return; }
         if (!actif) return;
-        dossier = choisi; session.dossier = choisi; await memoriserDossier(session.donnees, choisi); await actualiser();
+        dossier = choisi; session.dossier = choisi; await memoriserDossier(session.donnees, choisi); document.dispatchEvent(new CustomEvent('labyrinthe:photos-dossier', { detail: session })); await actualiser();
       } catch (e) { if (e.name !== 'AbortError') message('Choisis le dossier contenant votre fichier de travail et les photos du professeur.'); }
     });
     $('.photos-actualiser').addEventListener('click', actualiser);
-    $('.photos-importer input').addEventListener('change', e => afficher([...e.target.files]));
-    (async () => { dossier = dossier || await retrouver(session.donnees); if (actif && dossier) await actualiser(); })();
-    return () => { actif = false; lecture++; liberer(); };
+    $('.photos-importer input').addEventListener('change', e => afficher([...e.target.files], false));
+    const surDossier = e => { if (e.detail === session) actualiser(); };
+    document.addEventListener('labyrinthe:photos-dossier', surDossier);
+    message('Ouvre le dossier de votre équipe une première fois pour retrouver les photos enregistrées par le professeur.');
+    (async () => { dossier = dossier || await retrouver(session.donnees); if (actif && dossier) { session.dossier = dossier; await actualiser(); } })();
+    return () => { actif = false; lecture++; document.removeEventListener('labyrinthe:photos-dossier', surDossier); liberer(); };
   }
   A.photos = { monter, memoriserDossier, verifierDossier };
 })(this);

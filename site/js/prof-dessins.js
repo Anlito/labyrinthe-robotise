@@ -53,7 +53,7 @@
       '<div class="pd">' +
       '<section class="pe-carte pd-camera"><h3>Photographier la feuille</h3>' +
       (contexte.dossier
-        ? `<p class="pe-aide">La photo sera visible dans « Conception → Notre labyrinthe sur papier » lorsque les élèves ouvriront le dossier de leur équipe. Elle est enregistrée dans le dossier de l’équipe <strong>${echapper(contexte.equipe)}</strong>.</p>`
+        ? `<p class="pe-aide">Les élèves retrouvent les photos dans « Conception » et les documents de type Croquis ou Dessin technique dans « Croquis et dessin technique », après ouverture du dossier de leur équipe. Elle est enregistrée dans le dossier de l’équipe <strong>${echapper(contexte.equipe)}</strong>.</p>`
         : '<p class="pd-alerte">Pour enregistrer dans le dossier de l’équipe, ouvrez le <strong>dossier de la classe</strong> depuis l’accueil ' +
           '(Chrome ou Edge). Ici, la photo sera seulement téléchargée.</p>') +
       '<div class="pd-types" role="radiogroup" aria-label="Type de feuille">' +

@@ -231,3 +231,7 @@ a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visib
 @media (max-width: 800px) { .revision-page, .revision-deux-chaines { grid-template-columns: minmax(0, 1fr); } .revision-sommaire { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 440px) { .revision-page .revision-section { padding: 1rem; } .revision-intro { padding: 1.25rem; } .revision-sommaire { grid-template-columns: 1fr; } }
 @media print { .revision-page { display: block; } .revision-sommaire { display: none; } .revision-section { break-inside: avoid; margin-bottom: 1rem !important; } .revision-intro { background: white; color: black; } .revision-intro h2 { color: black; } }
+
+.photos-document { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 2px solid var(--bord); }
+.photos-document > h3 { color: var(--bleu-fonce); margin-top: 0; }
+.partie-cases[data-partie="croquis"], .partie-cases[data-partie="dessin-technique"] { scroll-margin-top: 7rem; }

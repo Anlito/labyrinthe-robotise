@@ -115,7 +115,7 @@ Dans la fiche d'une équipe : **Croquis et dessins → Plan du labyrinthe**, pho
 puis **Enregistrer dans le dossier de l'équipe**. Les fichiers JPG restent séparés du JSON des élèves pour
 éviter les écrasements pendant leur travail. Ils ne sont jamais publiés sur GitHub.
 
-Côté élèves : **Conception → Notre labyrinthe sur papier → Retrouver les photos de notre équipe**, puis choisir
+Côté élèves : **Conception → Les photos de notre labyrinthe → Retrouver les photos de notre équipe**, puis choisir
 le dossier de l'équipe (celui qui contient sa sauvegarde). Le site le vérifie, affiche les photos et peut le mémoriser.
 **Actualiser les photos** affiche les nouvelles prises de vue sans fermer le travail. Sans accès aux dossiers,
 **Ouvrir des photos…** permet de sélectionner les images. Sur un autre poste, rouvrir le même dossier réseau.
@@ -175,3 +175,13 @@ Les réponses des élèves sont rangées sous l'identifiant de chaque partie : n
   120°, dans le bon sens (sinon : inverser les deux nombres de « depuis » dans `labyrinthe` côté Labo Blocs).
 - Le bouton SW sur D4 (défi) et « Vider la carte ».
 - « Imprimer le gabarit » : le plateau mesure bien 16 cm sur la feuille (imprimer à 100 %, sans « ajuster à la page »).
+
+### Croquis et dessin technique côté élèves
+
+L’onglet **Croquis et dessin technique** rappelle le travail attendu sur papier avec deux listes à cocher :
+un croquis à main levée pour expliquer l’idée, puis un dessin technique à la règle et coté pour fabriquer.
+Chaque document dispose de sa galerie. Dans l’outil professeur, utiliser le type **Croquis** ou **Dessin technique**
+pour classer les photos. Les images du plan et toutes les photos de l’équipe restent également accessibles dans
+**Conception → Les photos de notre labyrinthe**. Les élèves ouvrent leur dossier une première fois ; **Actualiser**
+relit les images sans fermer leur travail. Ces deux nouvelles parties peuvent être activées dans **Barème**
+pour une évaluation manuelle sur quatre niveaux.

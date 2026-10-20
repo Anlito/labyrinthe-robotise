@@ -24,6 +24,7 @@ definirCarnet({
     { "cle": "systeme", "titre": "Le système", "icone": "variables", "parties": ["classement", "chaines-aide", "chaines", "phrase"] },
     { "cle": "cablage", "titre": "Câblage", "icone": "bouton", "parties": ["branchements-5", "rails-4", "etapes-4", "verification-4", "question-4"] },
     { "cle": "programmation", "titre": "Programmation", "icone": "lumiere", "parties": ["programmation"] },
+    { "cle": "dessins", "titre": "Croquis et dessin technique", "icone": "crayon", "parties": ["croquis", "dessin-technique"] },
     { "cle": "conception", "titre": "Conception", "icone": "crayon", "parties": ["labyrinthe", "comparaison-4", "materiaux", "reflexion"] },
     { "cle": "tests", "titre": "Tests et améliorations", "icone": "recommencer", "parties": ["tests", "amelioration"] },
     { "cle": "comprendre", "titre": "Comprendre", "icone": "livre", "parties": ["familles", "roles"] },
@@ -144,6 +145,14 @@ definirCarnet({
     // ---------- Programmation ----------
     { "id": "programmation", "type": "programmation", "titre": "Programmation",
       "consigne": "Programme le labyrinthe en blocs, exercice par exercice. Réussis un exercice pour ouvrir le suivant. Le plateau s’installe seulement quand l’exercice 7 (angles de 60° à 120°) est réussi et validé par le professeur." },
+
+    // ---------- Documents de conception sur papier ----------
+    { "id": "croquis", "type": "cases", "titre": "Le croquis : montrer notre idée", "photosType": "Croquis",
+      "consigne": "Sur une feuille, dessine à main levée une première idée du labyrinthe. Le croquis sert à expliquer et comparer vos idées ; ce n’est pas encore un plan de fabrication précis.",
+      "cases": ["Le nom de l’équipe et la classe sont écrits sur la feuille.", "On reconnaît la forme du plateau, les murs et le chemin de la bille.", "Le départ D, l’arrivée A, les trous et les tunnels éventuels sont repérés.", "Des annotations expliquent nos idées et les passages difficiles.", "Nous avons présenté le croquis au professeur pour qu’il le photographie."] },
+    { "id": "dessin-technique", "type": "cases", "titre": "Le dessin technique : préparer la fabrication", "photosType": "Dessin_technique",
+      "consigne": "Reprends l’idée retenue dans un dessin propre et précis, tracé à la règle. Ajoute les cotes : les mesures réelles écrites sur le dessin doivent permettre de fabriquer le plateau. Indique les unités et l’échelle utilisée.",
+      "cases": ["Le nom de l’équipe, la classe et le titre du dessin sont indiqués.", "Le plateau est représenté en vue de dessus, avec sa longueur et sa largeur (16 × 16 cm au maximum).", "Les murs, les passages, les trous et les tunnels éventuels sont positionnés et cotés.", "Le passage de la bille de 12 mm est prévu : le chemin mesure au moins 14 mm de large.", "Le départ D et l’arrivée A sont clairement indiqués ; les dimensions et les unités sont lisibles.", "Nous avons vérifié le dessin avec le professeur et demandé sa photographie."] },
 
     // ---------- Conception ----------
     { "id": "labyrinthe", "type": "labyrinthe", "titre": "Mon labyrinthe",
