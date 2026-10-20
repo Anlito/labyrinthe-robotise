@@ -89,7 +89,7 @@
   // ---------- Ouvrir une sauvegarde ----------
 
   // Renvoie { lecture, handle } (handle nul sur Firefox) ou null si annulé.
-  async function ouvrir() {
+  async function ouvrirFichier() {
     if (accesFichiers) {
       let handle;
       try {
@@ -114,6 +114,24 @@
       entree.addEventListener('cancel', () => resoudre(null));
       entree.click();
     });
+  }
+
+  // Ouvrir le dossier donne accès au JSON et aux images en un seul choix.
+  async function ouvrir(options) {
+    if (!accesDossiers || (options && options.fichier)) return ouvrirFichier();
+    let dossier;
+    try { dossier = await global.showDirectoryPicker({ id: A.projet.id + '-ouvrir', mode: 'readwrite' }); }
+    catch (e) { if (e.name === 'AbortError') return null; throw e; }
+    const candidats = [];
+    for await (const h of dossier.values()) {
+      if (h.kind !== 'file' || !/\.json$/i.test(h.name)) continue;
+      try { const lecture = await lireHandle(h); if (lecture.ok) candidats.push({handle:h,lecture,dossier}); } catch { /* fichier illisible : jamais modifié */ }
+    }
+    const identite = d => JSON.stringify([d.equipe.classe || '', [...d.equipe.eleves].sort()]);
+    if (!candidats.length) return {lecture:{ok:false,raison:'Ce dossier ne contient pas de sauvegarde du Labyrinthe. Choisis le dossier de ton équipe.'}};
+    if (new Set(candidats.map(c => identite(c.lecture.donnees))).size > 1) return {lecture:{ok:false,raison:'Ce dossier contient plusieurs équipes. Ouvre uniquement le sous-dossier de ton équipe.'}};
+    candidats.sort((a,b) => String(b.lecture.donnees.modifieLe || '').localeCompare(String(a.lecture.donnees.modifieLe || '')));
+    return candidats[0];
   }
 
   // ---------- Enregistrer ----------

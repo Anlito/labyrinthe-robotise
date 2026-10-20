@@ -68,3 +68,12 @@ Navigateurs : Chrome, Edge ; modes : fichier (index.html ouvert directement, com
 - Photo importée et enregistrée depuis l'outil professeur, retrouvée et actualisée dans le carnet élève ; JSON de l'équipe inchangé.
 - Partie activée, niveau de maîtrise 3/4 enregistré et retrouvé après réouverture.
 - Aucune erreur JavaScript pendant ces parcours. Caméra physique et véritable dossier réseau restent à vérifier en classe.
+
+## Affichage direct des photos du plan et de la réalisation
+
+- 122 tests Node réussis ; ouverture du dossier avec sélection de la sauvegarde la plus récente de la même équipe.
+- Un seul choix du dossier ouvre le travail et affiche le plan et la réalisation ; aucune sélection supplémentaire dans la galerie.
+- Nouvelle photo retrouvée automatiquement au retour sur la page, sans recharger le travail.
+- Dossier contenant plusieurs équipes refusé ; aucune sauvegarde écrasée.
+- Affichage ordinateur/mobile et fiche À retenir vérifiés dans Chrome.
+- Rubrique Croquis et dessin technique retirée ; anciennes photos conservées.

@@ -1,5 +1,5 @@
-// Outil professeur · onglet « Croquis et dessins » d'une équipe : le professeur photographie la feuille de l'équipe
-// (croquis, dessin technique) avec une webcam ou un visualiseur de documents, et la photo est enregistrée en .jpg
+// Outil professeur · onglet « Photos du labyrinthe » d'une équipe : le professeur photographie la feuille de l'équipe
+// (plan du labyrinthe, réalisation finale) avec une webcam ou un visualiseur de documents, et la photo est enregistrée en .jpg
 // directement dans le dossier de l'équipe (… › LABYRINTHE ROBOTISE › Prénom_Prénom). Le fichier .json de
 // l'équipe n'est jamais touché (les élèves peuvent l'écrire au même moment).
 (function (global) {
@@ -11,9 +11,7 @@
 
   const TYPES = [
     { cle: 'Labyrinthe', nom: 'Plan du labyrinthe' },
-    { cle: 'Croquis', nom: 'Croquis' },
-    { cle: 'Dessin_technique', nom: 'Dessin technique' },
-    { cle: 'Feuille', nom: 'Autre feuille' },
+    { cle: 'Realisation_finale', nom: 'Réalisation finale' },
   ];
   const IMAGE = /\.(jpe?g|png|webp)$/i;
   const CLE_CAMERA = global.Atelier.projet.id + '-prof-camera';
@@ -51,9 +49,9 @@
     etat.rotation = 0;
     box.innerHTML =
       '<div class="pd">' +
-      '<section class="pe-carte pd-camera"><h3>Photographier la feuille</h3>' +
+      '<section class="pe-carte pd-camera"><h3>Photographier le plan ou la réalisation</h3>' +
       (contexte.dossier
-        ? `<p class="pe-aide">Les élèves retrouvent les photos dans « Conception » et les documents de type Croquis ou Dessin technique dans « Croquis et dessin technique », après ouverture du dossier de leur équipe. Elle est enregistrée dans le dossier de l’équipe <strong>${echapper(contexte.equipe)}</strong>.</p>`
+        ? `<p class="pe-aide">Les élèves retrouvent automatiquement le plan et la réalisation finale dans « Conception » quand ils ouvrent leur dossier de travail. La photo est enregistrée dans le dossier de l’équipe <strong>${echapper(contexte.equipe)}</strong>.</p>`
         : '<p class="pd-alerte">Pour enregistrer dans le dossier de l’équipe, ouvrez le <strong>dossier de la classe</strong> depuis l’accueil ' +
           '(Chrome ou Edge). Ici, la photo sera seulement téléchargée.</p>') +
       '<div class="pd-types" role="radiogroup" aria-label="Type de feuille">' +
@@ -73,7 +71,7 @@
       `<button type="button" class="btn-principal pd-enregistrer">${contexte.dossier ? 'Enregistrer dans le dossier de l’équipe' : 'Télécharger la photo'}</button>` +
       '</div>' +
       '<p class="pd-message" role="status"></p>' +
-      '<p class="pe-aide pd-astuce">Astuce : posez la feuille à plat, bien éclairée, et remplissez le cadre. Un visualiseur de documents marche comme une webcam.</p>' +
+      '<p class="pe-aide pd-astuce">Astuce : placez le plan à plat ou cadrez la réalisation, avec un bon éclairage. Un visualiseur de documents marche comme une webcam.</p>' +
       '</section>' +
       '<section class="pe-carte pd-galerie"><h3>Dans le dossier de l’équipe</h3><div class="pd-liste"></div></section>' +
       '</div>';

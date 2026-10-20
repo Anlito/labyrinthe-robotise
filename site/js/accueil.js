@@ -54,7 +54,7 @@
           // L'autorisation d'écrire sera demandée au premier vrai travail (vérification, indice, Enregistrer).
           if ((await handle.queryPermission({ mode: 'read' })) === 'granted') {
             const lecture = A.lireSauvegarde(await (await handle.getFile()).text());
-            const meme = lecture.ok && A.nomEquipe(lecture.donnees.equipe.eleves) === A.nomEquipe(secours.equipe.eleves);
+            const meme = lecture.ok && A.nomEquipe(lecture.donnees.equipe.eleves) === A.nomEquipe(secours.equipe.eleves) && lecture.donnees.equipe.classe === secours.equipe.classe;
             if (!meme) handle = null;
             else if (lecture.donnees.modifieLe > secours.modifieLe) donnees = lecture.donnees;
           }
@@ -67,20 +67,22 @@
     $('.btn-pas-nous', racine).addEventListener('click', () => (carte.hidden = true));
 
     $('.btn-nouvelle', racine).addEventListener('click', () => montrer('equipe'));
-    $('.btn-ouvrir', racine).addEventListener('click', async () => {
+    async function ouvrirProjet(fichierSeulement) {
       erreur('choix', '');
       let r;
       try {
-        r = await F.ouvrir();
+        r = await F.ouvrir({ fichier: fichierSeulement });
       } catch {
         return erreur('choix', 'Le fichier n’a pas pu être ouvert. Réessaie.');
       }
       if (!r) return;
       if (!r.lecture.ok) return erreur('choix', r.lecture.raison + ' Rien n’a été modifié.');
-      // Pas de demande d'autorisation à l'ouverture : rien n'a encore été fait. Elle viendra au premier
-      // vrai travail de l'équipe (vérification, indice ou clic sur « Enregistrer »).
+      // Le dossier choisi donne accès à la sauvegarde et aux photos en une seule ouverture.
+      dossierEquipe = r.dossier || null;
       fin(r.lecture.donnees, r.handle);
-    });
+    }
+    $('.btn-ouvrir', racine).addEventListener('click', () => ouvrirProjet(false));
+    $('.btn-ouvrir-fichier', racine).addEventListener('click', () => ouvrirProjet(true));
 
     // ----- Équipe -----
 
@@ -231,7 +233,11 @@
     $('.btn-commencer-sans-dossier', racine).addEventListener('click', () => fin(A.creerProgression(equipe), null));
     $('.btn-retour-equipe', racine).addEventListener('click', () => montrer('equipe'));
 
-    function fin(donnees, handle) {
+    async function fin(donnees, handle) {
+      if (!dossierEquipe && A.photos) dossierEquipe = await A.photos.retrouver(donnees);
+      if (dossierEquipe) {
+        try { if (await dossierEquipe.queryPermission({mode: 'read'}) !== 'granted') await dossierEquipe.requestPermission({mode: 'read'}); } catch { /* le carnet reste accessible ; bouton d’autorisation dans les photos */ }
+      }
       F.memoriserHandle(handle);
       F.sauverSecours(donnees);
       racine.hidden = true;

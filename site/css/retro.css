@@ -235,3 +235,8 @@ a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visib
 .photos-document { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 2px solid var(--bord); }
 .photos-document > h3 { color: var(--bleu-fonce); margin-top: 0; }
 .partie-cases[data-partie="croquis"], .partie-cases[data-partie="dessin-technique"] { scroll-margin-top: 7rem; }
+.photos-galerie { display: block; }
+.photos-categorie { margin-top: 1rem; }
+.photos-categorie h4 { margin: 0 0 0.75rem; color: var(--bleu-fonce); font: 700 1.0625rem var(--titres); }
+.photos-vignettes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: 1rem; }
+@media (max-width: 800px) { .hote-labyrinthe { max-width: 100%; overflow: auto; } .hote-labyrinthe > .lab { min-width: 40rem; } }

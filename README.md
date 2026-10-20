@@ -9,7 +9,7 @@ tient dans un fichier `.json` enregistré dans son dossier réseau.
 En ligne : https://anlito.github.io/labyrinthe-robotise/ (élèves) · `prof.html` (professeur)
 
 - `site/index.html` : carnet des élèves (`?enseignant=1` : mode enseignant)
-- `site/prof.html` : outil professeur (suivi en direct, alertes, note, carnet de chaque équipe, exports, photo des croquis)
+- `site/prof.html` : outil professeur (suivi en direct, alertes, note, carnet de chaque équipe, exports, photos du plan et de la réalisation finale)
 - **Pour le professeur** : [LISEZ-MOI.md](LISEZ-MOI.md) (matériel, utilisation, note, modification des contenus).
 - Modèle : l'atelier du distributeur de céréales ([Anlito/atelier-cereales](https://github.com/Anlito/atelier-cereales)) ;
   liaison à Labo Blocs : [docs/BRIEF-LABO-BLOCS.md](docs/BRIEF-LABO-BLOCS.md).

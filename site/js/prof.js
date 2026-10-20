@@ -933,7 +933,7 @@
     const retenue = (n) => Math.min(bareme.penaliteEchecMax, Math.max(0, n - bareme.essaisGratuits) * bareme.penaliteEchec);
     const points = (niveau) => {
       const programmation = A.exercicesObligatoires().slice(0, bareme.objectif).reduce((s, id) => s + (bareme.coefficients[id] || 0), 0);
-      const carnet = Object.entries(bareme.carnet).reduce((s, [id, coef]) => s + (A.pourNiveau(partieCarnet(id), niveau) ? coef : 0), 0);
+      const carnet = Object.entries(bareme.carnet).reduce((s, [id, coef]) => s + (A.partieCarnet(A.carnet, id) && A.pourNiveau(partieCarnet(id), niveau) ? coef : 0), 0);
       return programmation + carnet > 0 ? bareme.sur / (programmation + carnet) : 0;
     };
     const p5 = points('5'), p4 = points('4');

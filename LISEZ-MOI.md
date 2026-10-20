@@ -38,7 +38,7 @@ automatique). Firefox fonctionne pour le reste, mais « Enregistrer » y téléc
 
 ## 3. Ce que font les élèves
 
-1. **Accueil** : « Nouvelle équipe » (1 à 3 prénoms et la classe, 5e ou 4e) ou « Ouvrir notre sauvegarde ».
+1. **Accueil** : « Nouvelle équipe » (1 à 3 prénoms et la classe, 5e ou 4e) ou « Ouvrir notre équipe ».
 2. **Dossier de l'équipe** : le chemin s'affiche (`Bureau › Classe › 5A › COMMUN › TECHNOLOGIE › LABYRINTHE ROBOTISE`).
    L'élève sélectionne seulement `LABYRINTHE ROBOTISE` : le carnet y crée le dossier de l'équipe (`Prénom_Prénom`).
    Le professeur n'a que le dossier LABYRINTHE ROBOTISE à créer dans chaque classe. Une sauvegarde déjà présente
@@ -73,7 +73,7 @@ automatique). Firefox fonctionne pour le reste, mais « Enregistrer » y téléc
    départ), tunnels, départ et arrivée. Les vérifications (départ, arrivée, chemin, largeur, durée d'au moins 10 s)
    s'affichent à côté. « Essayer » fait rouler une bille de 12 mm (flèches du clavier ou joystick à l'écran). « Imprimer
    le gabarit » sort le plan à l'échelle 1, pour la fabrication. Les élèves peuvent aussi dessiner sur papier : le
-   professeur photographie la feuille (outil professeur, « Croquis et dessins »).
+   professeur photographie la feuille (outil professeur, « Photos du labyrinthe »).
 8. **Un seul fichier** `Prénom_Prénom.json` garde le carnet, le labyrinthe et les exercices ; il se réenregistre tout
    seul (Chrome, Edge). Si l'onglet est fermé par erreur, l'accueil propose « Reprendre le travail de … ».
 
@@ -89,7 +89,7 @@ automatique). Firefox fonctionne pour le reste, mais « Enregistrer » y téléc
   **Bilan** (note et composition, avancement, programme final et défi), **Programmation** (chaque exercice, ses
   points ; « Lancer le programme » le rouvre en lecture), **Carnet de projet** (chaque partie du niveau de l'équipe, son
   état, ses réponses case par case avec ✓ / ✗, le labyrinthe dessiné et ses vérifications, les points),
-  **Historique** (vérifications, erreurs, indices), **Croquis et dessins** (photo de la feuille par webcam, rangée en
+  **Historique** (vérifications, erreurs, indices), **Photos du labyrinthe** (photo de la feuille par webcam, rangée en
   .jpg dans le dossier de l'équipe).
 - **Bandeau** : « Barème », « Excel », « CSV », « Carnet de classe » (niveaux par compétence de Labo Blocs à importer
   dans le Carnet de classe), « Imprimer », « Autre classe », « Exercices » (mise à jour du parcours).
@@ -111,7 +111,7 @@ Excel et le détail de chaque équipe (réponses, labyrinthe, câblage de 4e coc
 
 ### Retrouver les photos des feuilles
 
-Dans la fiche d'une équipe : **Croquis et dessins → Plan du labyrinthe**, photographier ou importer l'image,
+Dans la fiche d'une équipe : **Photos du labyrinthe → Plan du labyrinthe**, photographier ou importer l'image,
 puis **Enregistrer dans le dossier de l'équipe**. Les fichiers JPG restent séparés du JSON des élèves pour
 éviter les écrasements pendant leur travail. Ils ne sont jamais publiés sur GitHub.
 
@@ -176,12 +176,18 @@ Les réponses des élèves sont rangées sous l'identifiant de chaque partie : n
 - Le bouton SW sur D4 (défi) et « Vider la carte ».
 - « Imprimer le gabarit » : le plateau mesure bien 16 cm sur la feuille (imprimer à 100 %, sans « ajuster à la page »).
 
-### Croquis et dessin technique côté élèves
+### Plan et réalisation finale : affichage direct des photos
 
-L’onglet **Croquis et dessin technique** rappelle le travail attendu sur papier avec deux listes à cocher :
-un croquis à main levée pour expliquer l’idée, puis un dessin technique à la règle et coté pour fabriquer.
-Chaque document dispose de sa galerie. Dans l’outil professeur, utiliser le type **Croquis** ou **Dessin technique**
-pour classer les photos. Les images du plan et toutes les photos de l’équipe restent également accessibles dans
-**Conception → Les photos de notre labyrinthe**. Les élèves ouvrent leur dossier une première fois ; **Actualiser**
-relit les images sans fermer leur travail. Ces deux nouvelles parties peuvent être activées dans **Barème**
-pour une évaluation manuelle sur quatre niveaux.
+Le projet ne comporte pas de rubrique de croquis ni de dessin technique. Dans la fiche d’équipe,
+**Photos du labyrinthe** propose seulement **Plan du labyrinthe** et **Réalisation finale**. Photographier ou importer
+une image puis l’enregistrer dans le dossier de l’équipe. Les anciennes images déjà présentes ne sont pas effacées.
+
+Les élèves choisissent **Ouvrir notre équipe** et sélectionnent leur dossier une seule fois : le JSON et les photos
+sont lus ensemble. Dans **Conception**, les images apparaissent directement, classées entre plan et réalisation.
+Le dossier est mémorisé pour **Reprendre** ; le navigateur peut demander de renouveler son autorisation.
+Aucun choix supplémentaire n’est demandé dans la galerie si le dossier est déjà autorisé. Les images sont
+relues à l’ouverture de Conception, au retour sur l’onglet du navigateur et toutes les 15 secondes tant que la page est visible.
+
+L’option **Ouvrir seulement un fichier de sauvegarde** reste disponible. Avec un fichier isolé, le navigateur ne donne
+pas accès aux images voisines : il faut ouvrir le dossier depuis la galerie, ou sélectionner des images manuellement.
+Sans accès aux dossiers (Firefox), la sélection manuelle reste nécessaire. Aucune photo n’est envoyée en ligne.

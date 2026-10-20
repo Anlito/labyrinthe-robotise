@@ -113,12 +113,6 @@
         const photos = document.createElement('section'); photos.className = 'carte-carnet photos-eleves'; zone.prepend(photos);
         fermerPhotos.push(A.photos.monter(photos, session));
       }
-      if (o && A.photos) for (const p of o.parties.filter(p => p.photosType)) {
-        const section = [...zone.querySelectorAll('[data-partie]')].find(el => el.dataset.partie === p.id);
-        if (!section) continue;
-        const photos = document.createElement('div'); photos.className = 'photos-document'; section.append(photos);
-        fermerPhotos.push(A.photos.monter(photos, session, { type: p.photosType, titre: p.photosType === 'Croquis' ? 'La photo de notre croquis' : 'La photo de notre dessin technique' }));
-      }
       poserLabyrinthe(zone);
       if (nouvelOnglet) racine.scrollTop = 0;
     }
