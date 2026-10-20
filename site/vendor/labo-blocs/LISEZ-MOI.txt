@@ -1,0 +1,2 @@
+Labo Blocs 0.4.0 (module partagé), construit le 2026-10-19.
+Copié par « npm run vers-projet » depuis le dépôt labo-blocs. Ne pas modifier ces fichiers : ils sont remplacés à chaque copie.

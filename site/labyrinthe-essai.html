@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mon labyrinthe — page d’essai</title>
+<link rel="stylesheet" href="css/labyrinthe.css">
+<style>
+  /* Page d'essai seule : le module sera posé plus tard dans l'onglet Conception du carnet. */
+  :root { --police: 'Segoe UI', system-ui, -apple-system, sans-serif; color-scheme: light; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { background: #F4F7F9; color: #1F2A30; font: 400 0.9375rem/1.4 var(--police); overflow: hidden; display: flex; flex-direction: column; }
+  button { font-family: inherit; }
+  .essai-entete {
+    flex: none; display: flex; align-items: center; gap: 0.625rem; padding: 0.5rem 1.25rem;
+    background: #FFFFFF; border-bottom: 1px solid #D5DEE3;
+  }
+  .essai-entete h1 { margin: 0 auto 0 0; font-size: 1.25rem; }
+  .essai-entete h1 span { color: #4F5D66; font-weight: 600; font-size: 0.9375rem; }
+  .essai-btn { min-height: 2.5rem; padding: 0 0.875rem; border: 2px solid #D5DEE3; border-radius: 0.625rem; background: #FFFFFF; font-weight: 600; font-size: 0.875rem; cursor: pointer; }
+  .essai-btn:hover { background: #EDF2F5; }
+  .essai-btn[aria-pressed="true"] { border-color: #1A6E8E; background: #E6F1F5; }
+  .essai-etat { font-size: 0.875rem; color: #4F5D66; min-width: 12rem; text-align: right; }
+  #hote { flex: 1; min-height: 0; padding: 0.75rem 1.25rem 1rem; }
+  dialog { width: min(48rem, 92vw); border: 1px solid #D5DEE3; border-radius: 0.875rem; padding: 1rem 1.25rem; }
+  dialog h2 { margin: 0 0 0.5rem; font-size: 1.125rem; }
+  dialog textarea { width: 100%; height: 50vh; font: 0.8125rem/1.4 Consolas, monospace; }
+  dialog .actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 0.5rem; }
+</style>
+<link rel="stylesheet" href="css/retro.css">
+</head>
+<body>
+<header class="essai-entete">
+  <h1>Mon labyrinthe <span>· page d’essai du module</span></h1>
+  <span class="essai-etat" id="etat">Aucune modification</span>
+  <button type="button" class="essai-btn" id="exemple">Charger l’exemple</button>
+  <button type="button" class="essai-btn" id="vide">Plateau vide</button>
+  <button type="button" class="essai-btn" id="lecture" aria-pressed="false">Mode lecture</button>
+  <button type="button" class="essai-btn" id="voir">Données (JSON)</button>
+</header>
+<main id="hote"></main>
+
+<dialog id="fenetre">
+  <h2>Données du labyrinthe (rangées dans <code>carnet.labyrinthe</code>)</h2>
+  <textarea id="json" spellcheck="false"></textarea>
+  <div class="actions">
+    <button type="button" class="essai-btn" id="appliquer">Appliquer ces données</button>
+    <button type="button" class="essai-btn" id="fermer">Fermer</button>
+  </div>
+</dialog>
+
+<script src="js/labyrinthe/modele.js"></script>
+<script src="js/labyrinthe/dessin.js"></script>
+<script src="js/labyrinthe/physique.js"></script>
+<script src="js/labyrinthe/ecran.js"></script>
+<script>
+  'use strict';
+  // Exemple fictif : un serpentin avec deux trous et un tunnel (couloir couvert de 3 cases).
+  const EXEMPLE = {
+    version: 1,
+    epaisseurMur: 2,
+    inclinaisonMax: 30,
+    murs: [
+      'h-0-2', 'h-1-2', 'h-2-2', 'h-3-2', 'h-4-2', 'h-5-2', 'h-6-2',
+      'h-1-4', 'h-2-4', 'h-3-4', 'h-4-4', 'h-5-4', 'h-6-4', 'h-7-4',
+      'h-0-6', 'h-1-6', 'h-2-6', 'h-3-6', 'h-4-6', 'h-5-6',
+      'v-3-0', 'v-5-1', 'v-2-3', 'v-6-5', 'v-4-7',
+    ],
+    trous: [{ c: 4, l: 3 }, { c: 2, l: 5 }],
+    tunnels: [{ c: 5, l: 3 }, { c: 6, l: 3 }, { c: 7, l: 3 }],
+    depart: { c: 0, l: 0 },
+    arrivee: { c: 7, l: 7 },
+    meilleursTemps: [],
+  };
+
+  const etat = document.getElementById('etat');
+  let modifications = 0;
+  const lab = Labyrinthe.monter(document.getElementById('hote'), {
+    donnees: EXEMPLE,
+    surChangement(donnees) {
+      modifications++;
+      etat.textContent = `${modifications} modification${modifications > 1 ? 's' : ''} · ${new Date().toLocaleTimeString('fr-FR')}`;
+      window.dernieresDonnees = donnees;
+    },
+    lecture: false,
+  });
+  window.lab = lab;
+
+  document.getElementById('exemple').addEventListener('click', () => lab.definir(EXEMPLE));
+  document.getElementById('vide').addEventListener('click', () => lab.definir(Labyrinthe.vide()));
+  const boutonLecture = document.getElementById('lecture');
+  boutonLecture.addEventListener('click', () => {
+    const oui = boutonLecture.getAttribute('aria-pressed') !== 'true';
+    boutonLecture.setAttribute('aria-pressed', String(oui));
+    lab.lecture(oui);
+  });
+  const fenetre = document.getElementById('fenetre');
+  const json = document.getElementById('json');
+  document.getElementById('voir').addEventListener('click', () => {
+    json.value = JSON.stringify(lab.donnees(), null, 2);
+    fenetre.showModal();
+  });
+  document.getElementById('fermer').addEventListener('click', () => fenetre.close());
+  document.getElementById('appliquer').addEventListener('click', () => {
+    try {
+      lab.definir(JSON.parse(json.value));
+      fenetre.close();
+    } catch (e) {
+      json.setCustomValidity('Ce texte n’est pas du JSON lisible.');
+      json.reportValidity();
+      json.setCustomValidity('');
+    }
+  });
+</script>
+</body>
+</html>

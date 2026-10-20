@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Module joystick">
+  <rect x="14" y="40" width="92" height="66" rx="8" fill="#1F5FA8"/>
+  <rect x="20" y="46" width="80" height="54" rx="5" fill="#2B74C6"/>
+  <circle cx="60" cy="73" r="24" fill="#2A2F33"/>
+  <circle cx="60" cy="73" r="17" fill="#3B4248"/>
+  <rect x="55" y="30" width="10" height="44" rx="5" fill="#2A2F33"/>
+  <ellipse cx="60" cy="27" rx="20" ry="13" fill="#1B1F22"/>
+  <ellipse cx="60" cy="24" rx="16" ry="8" fill="#40474D"/>
+  <g fill="#D9B44A"><rect x="24" y="100" width="6" height="12"/><rect x="38" y="100" width="6" height="12"/><rect x="52" y="100" width="6" height="12"/><rect x="66" y="100" width="6" height="12"/><rect x="80" y="100" width="6" height="12"/></g>
+</svg>
