@@ -127,3 +127,42 @@ a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visib
   .prof-tableau thead th { background: white; color: black; }
 }
 @media (prefers-reduced-motion: reduce) { .barre > span { transition: none; } .suivi-point { animation: none; } }
+
+/* Aide du carnet : structure et liaison des deux chaînes fonctionnelles. */
+.schema-chaines { margin: 1.25rem 0 0; padding: 1rem; border: 2px solid var(--bord); background: #FAFAFC; }
+.schema-chaines figcaption { font: 700 1.125rem var(--titres); }
+.schema-chaines h3 { margin: 0 0 0.5rem; }
+.schema-chaines section > p { margin: 0.25rem 0 0.75rem; }
+.schema-information, .schema-energie { padding: 1rem; border: 2px solid var(--retro-bleu); background: #E8F4FF; }
+.schema-energie { border-color: var(--retro-orange); background: #FFF5E0; }
+.schema-flux { display: flex; align-items: flex-start; gap: 0.35rem; }
+.schema-fonction { flex: 1; min-width: 0; background: white; border: 2px solid #0055CC; }
+.schema-energie .schema-fonction { border-color: #A85B00; }
+.schema-fonction summary { padding: 0.65rem 0.5rem; font-weight: 700; cursor: pointer; overflow-wrap: anywhere; }
+.schema-fonction summary span { display: inline-flex; justify-content: center; align-items: center; width: 1.25rem; height: 1.25rem; border: 1px solid currentColor; border-radius: 50%; font-size: 0.8rem; }
+.schema-fonction summary:focus-visible { outline: 3px solid var(--signal); outline-offset: 2px; }
+.schema-fonction p { padding: 0 0.65rem 0.65rem; margin: 0; font-size: 0.875rem; line-height: 1.5; }
+.schema-fleche { flex: none; padding-top: 0.9rem; font-size: 0.75rem; font-weight: 700; }
+.schema-liaison { margin: 0.5rem 0 0.5rem 26%; padding: 0.5rem 0.75rem; border-left: 3px solid var(--bleu); display: grid; gap: 0.35rem; }
+.schema-liaison strong { color: var(--bleu-fonce); }
+.schema-liaison span, .schema-legende { font-size: 0.875rem; line-height: 1.5; }
+.schema-action { margin-bottom: 0 !important; font-weight: 600; }
+.bareme-exemple-carnet { margin-block: 1rem; padding: 1rem; border: 2px solid var(--retro-bleu); background: #E8F4FF; }
+.bareme-exemple-carnet h4 { margin: 0 0 0.75rem; font-size: 1.125rem; }
+.bareme-exemple-carnet p { line-height: 1.55; }
+.bareme-exemple-carnet .table-defile { max-width: 100%; overflow-x: auto; }
+.bareme-table-exemple { width: 100%; border-collapse: collapse; font-size: 0.875rem; background: white; }
+.bareme-table-exemple th, .bareme-table-exemple td { border: 1px solid var(--bord); padding: 0.5rem; text-align: left; }
+.bareme-table-exemple thead { background: var(--retro-nuit); color: white; }
+@media (max-width: 800px) {
+  .schema-flux { flex-direction: column; align-items: stretch; }
+  .schema-fonction { flex: auto; }
+  .schema-fleche { padding: 0.125rem 0; text-align: center; }
+  .schema-liaison { margin-left: 0; }
+}
+@media print { .schema-fonction p { display: block !important; } }
+
+.schema-liaison { position: relative; margin: 0; padding: 2rem 0.75rem 1rem 41%; min-height: 7rem; border: none; }
+.schema-lien { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; fill: none; stroke: var(--bleu); stroke-width: 2.5; }
+@media (max-width: 800px) { .schema-liaison { padding: 1rem; border-left: 3px solid var(--bleu); } .schema-lien { display: none; } .schema-liaison strong::before { content: '↓ '; } }
+.schema-chaines { scroll-margin-top: 7rem; }

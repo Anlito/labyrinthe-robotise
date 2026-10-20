@@ -21,7 +21,7 @@ definirCarnet({
   "titre": "Labyrinthe robotisé",
   "onglets": [
     { "cle": "mission", "titre": "La mission", "icone": "drapeau", "parties": ["mission", "contraintes", "securite"] },
-    { "cle": "systeme", "titre": "Le système", "icone": "variables", "parties": ["classement", "chaines", "phrase"] },
+    { "cle": "systeme", "titre": "Le système", "icone": "variables", "parties": ["classement", "chaines-aide", "chaines", "phrase"] },
     { "cle": "cablage", "titre": "Câblage", "icone": "bouton", "parties": ["branchements-5", "rails-4", "etapes-4", "verification-4", "question-4"] },
     { "cle": "programmation", "titre": "Programmation", "icone": "lumiere", "parties": ["programmation"] },
     { "cle": "conception", "titre": "Conception", "icone": "crayon", "parties": ["labyrinthe", "comparaison-4", "materiaux", "reflexion"] },
@@ -74,6 +74,8 @@ definirCarnet({
         { "nom": "Buzzer", "image": "img/objets/enceinte.png", "place": "actionneur" },
         { "nom": "Capteur de distance", "image": "img/objets/distance.png", "place": "capteur" }
       ] },
+    { "id": "chaines-aide", "type": "info", "titre": "Comprendre les deux chaînes", "schemaChaines": true,
+      "lignes": ["La chaîne d’information reçoit des informations, les traite et envoie des ordres. Elle répond à la question : que doit faire le système ?", "La chaîne d’énergie fournit et transforme l’énergie nécessaire au mouvement. Elle répond à la question : comment réaliser l’action ?"] },
     { "id": "chaines", "type": "trous", "titre": "La chaîne d’information et la chaîne d’énergie", "note": true,
       "consigne": "Complète chaque fonction avec l’élément du labyrinthe qui la réalise.",
       "lignes": [
@@ -81,8 +83,8 @@ definirCarnet({
         "Chaîne d’information · Traiter : [[la carte Arduino]]",
         "Chaîne d’information · Communiquer : [[l’ordre d’angle envoyé aux servomoteurs]]",
         "Chaîne d’énergie · Alimenter : [[le câble USB]]",
-        "Chaîne d’énergie · Distribuer : [[les fils électriques]]",
-        "Chaîne d’énergie · Agir : [[les servomoteurs]]"
+        "Chaîne d’énergie · Acheminer l’énergie : [[les fils électriques]]",
+        "Chaîne d’énergie · Convertir l’énergie en mouvement : [[les servomoteurs]]"
       ],
       "choix": ["le joystick", "la carte Arduino", "l’ordre d’angle envoyé aux servomoteurs", "le câble USB", "les fils électriques", "les servomoteurs", "la bille", "le plateau"] },
     { "id": "phrase", "type": "trous", "titre": "Le fonctionnement global", "note": true,

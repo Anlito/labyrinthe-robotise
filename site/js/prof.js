@@ -907,7 +907,32 @@
     for (const el of zoneBareme.querySelectorAll('[data-coef-carnet]')) el.value = bareme.carnet[el.dataset.coefCarnet];
     resumerBareme();
   }
+  function expliquerCarnet() {
+    const pct = (n) => A.nombreFr(100 * n) + ' %';
+    const echecsPour = (tentative) => tentative - 1;
+    const retenue = (n) => Math.min(bareme.penaliteEchecMax, Math.max(0, n - bareme.essaisGratuits) * bareme.penaliteEchec);
+    const points = (niveau) => {
+      const programmation = A.exercicesObligatoires().slice(0, bareme.objectif).reduce((s, id) => s + (bareme.coefficients[id] || 0), 0);
+      const carnet = Object.entries(bareme.carnet).reduce((s, [id, coef]) => s + (A.pourNiveau(partieCarnet(id), niveau) ? coef : 0), 0);
+      return programmation + carnet > 0 ? bareme.sur / (programmation + carnet) : 0;
+    };
+    const p5 = points('5'), p4 = points('4');
+    let h = '<h4>Comment les vérifications du carnet comptent-elles ?</h4>' +
+      '<p>Une tentative correspond à un clic sur <strong>« Vérifier » pour toute la partie</strong>, même si plusieurs réponses sont à revoir. Seules les vérifications ratées <strong>avant la première réussite</strong> entraînent une retenue. La vérification réussie et les clics suivants n’enlèvent aucun point.</p>' +
+      `<p>Réglage actuel : ${bareme.essaisGratuits} vérification(s) ratée(s) sans retenue, puis <strong>−${pct(bareme.penaliteEchec)} des points de cette partie</strong> par échec supplémentaire, au maximum <strong>−${pct(bareme.penaliteEchecMax)}</strong>. Les mêmes réglages s’appliquent au carnet et à la programmation. Les indices concernent uniquement la programmation.</p>` +
+      `<p><strong>Exemple réel, partie de coefficient 1 :</strong> elle vaut ${A.nombreFr(p5, 2)} point(s) en 5e et ${A.nombreFr(p4, 2)} point(s) en 4e, avant l’arrondi de la note finale. Ces valeurs suivent les coefficients et l’objectif choisis.</p>` +
+      '<div class="table-defile"><table class="bareme-table-exemple"><thead><tr><th>Première réussite</th><th>Vérifications ratées avant</th><th>Retenue sur cette partie</th><th>Points conservés</th><th>Points en 5e / en 4e</th></tr></thead><tbody>';
+    for (let t = 1; t <= 7; t++) {
+      const r = retenue(echecsPour(t));
+      h += `<tr><th>${t === 1 ? '1er clic' : t + 'e clic'}</th><td>${t - 1}</td><td>−${pct(r)}</td><td>${pct(1 - r)}</td><td>${A.nombreFr(p5 * (1 - r), 2)} / ${A.nombreFr(p4 * (1 - r), 2)}</td></tr>`;
+    }
+    h += '</tbody></table></div>' +
+      `<p><strong>Pas encore réussi :</strong> après au moins une vérification, la partie rapporte ${pct(bareme.participation)} de ses points (participation). Sans vérification : 0. Les parties non notées et celles d’un autre niveau ne comptent pas.</p>` +
+      '<p>Pour supprimer les pertes liées aux tentatives, réglez « Retenue par vérification ratée supplémentaire » sur 0 %. Pour autoriser un premier essai sans perte, réglez « Vérifications ratées sans retenue » sur 1.</p>';
+    $('.bareme-exemple-carnet').innerHTML = h;
+  }
   function resumerBareme() {
+    expliquerCarnet();
     $('.bareme-resume').textContent =
       `· sur ${bareme.sur}, ${bareme.objectif} exercices attendus, −${Math.round(bareme.penaliteIndice * 100)} % par indice, ` +
       `−${Math.round(bareme.penaliteEchec * 100)} % par essai raté${bareme.essaisGratuits ? ` au-delà de ${bareme.essaisGratuits}` : ''}, ` +

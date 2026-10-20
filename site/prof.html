@@ -183,17 +183,18 @@
         <label>Réussi en avance (au-delà) <input type="number" data-b="avance" data-pourcent min="0" max="100" step="5"> %</label>
         <label>Bonus par défi réussi (points) <input type="number" data-b="bonusDefi" min="0" max="20" step="0.5"></label>
         <label>Commencé sans réussir <input type="number" data-b="participation" data-pourcent min="0" max="100" step="5"> %</label>
-        <label>Retenue par indice <input type="number" data-b="penaliteIndice" data-pourcent min="0" max="100" step="5"> %</label>
-        <label>Retenue indices au plus <input type="number" data-b="penaliteIndiceMax" data-pourcent min="0" max="100" step="5"> %</label>
-        <label>Essais ratés sans retenue <input type="number" data-b="essaisGratuits" min="0" max="50" step="1"></label>
-        <label>Retenue par essai raté en plus <input type="number" data-b="penaliteEchec" data-pourcent min="0" max="100" step="1"> %</label>
-        <label>Retenue essais au plus <input type="number" data-b="penaliteEchecMax" data-pourcent min="0" max="100" step="5"> %</label>
+        <label>Programmation · retenue par indice <input type="number" data-b="penaliteIndice" data-pourcent min="0" max="100" step="5"> %</label>
+        <label>Programmation · retenue maximale pour les indices <input type="number" data-b="penaliteIndiceMax" data-pourcent min="0" max="100" step="5"> %</label>
+        <label>Vérifications ratées sans retenue, par activité <input type="number" data-b="essaisGratuits" min="0" max="50" step="1"></label>
+        <label>Retenue par vérification ratée supplémentaire <input type="number" data-b="penaliteEchec" data-pourcent min="0" max="100" step="1"> %</label>
+        <label>Retenue maximale pour les vérifications ratées <input type="number" data-b="penaliteEchecMax" data-pourcent min="0" max="100" step="5"> %</label>
         <label>Arrondi
           <select data-b="arrondi"><option value="0.5">au demi-point</option><option value="0.25">au quart de point</option><option value="1">au point</option><option value="0">au centième</option></select>
         </label>
       </div>
+      <div class="bareme-exemple-carnet" aria-live="polite"></div>
       <p class="bareme-titre-coefs">Coefficients (0 = ne compte pas). Le carnet : les parties avec « Vérifier » sont notées comme la programmation
-        (−5 % par vérification ratée avant la réussite) ; une partie propre à un niveau ne compte que pour ce niveau. Les autres parties ne sont pas
+        (retenues selon les réglages ci-dessus et le tableau explicatif) ; une partie propre à un niveau ne compte que pour ce niveau. Les autres parties ne sont pas
         notées, mais leur travail est visible dans l’onglet « Carnet de projet » de chaque équipe.</p>
       <div class="bareme-coefs"></div>
       <button type="button" class="btn-secondaire btn-bareme-fichier">Revenir au barème du fichier</button>

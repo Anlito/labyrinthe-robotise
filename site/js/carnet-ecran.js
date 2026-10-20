@@ -127,7 +127,26 @@
     }
 
     function info(p) {
-      return `<ul class="info-lignes">${(p.lignes || []).map((l) => `<li>${echapper(l)}</li>`).join('')}</ul>`;
+      return `<ul class="info-lignes">${(p.lignes || []).map((l) => `<li>${echapper(l)}</li>`).join('')}</ul>` + (p.schemaChaines ? schemaChaines() : '');
+    }
+
+    // Structure fonctionnelle : https://eduscol.education.fr/document/17425/download
+    function schemaChaines() {
+      const bloc = (nom, definition) => `<details class="schema-fonction"><summary>${nom}<span aria-hidden="true"> ?</span></summary><p>${definition}</p></details>`;
+      return '<figure class="schema-chaines"><figcaption>Deux chaînes reliées pour réaliser une action</figcaption>' +
+        '<p class="schema-legende">Clique sur une fonction pour lire son explication. Chaque flèche porte le nom de ce qui circule.</p>' +
+        '<section class="schema-information" aria-label="Chaîne d’information"><h3>Chaîne d’information</h3><p>Une information entre dans le système.</p><div class="schema-flux">' +
+        bloc('Acquérir', 'Mesurer une grandeur ou détecter un événement grâce à un capteur : position, appui, lumière…') +
+        '<span class="schema-fleche">information →</span>' + bloc('Traiter', 'Exécuter le programme pour décider de la réponse à apporter aux informations reçues.') +
+        '<span class="schema-fleche">décision →</span>' + bloc('Communiquer', 'Transmettre la décision sous forme d’un ordre à la partie qui réalise l’action.') + '</div></section>' +
+        '<div class="schema-liaison"><svg class="schema-lien" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true"><path d="M850 0 V18 H360 V98"/><path d="M350 82 L360 98 L370 82"/></svg><strong>Ordre de commande</strong><span>La chaîne d’information pilote la distribution de l’énergie. Un ordre indique quoi faire ; l’énergie permet de le faire.</span></div>' +
+        '<section class="schema-energie" aria-label="Chaîne d’énergie"><h3>Chaîne d’énergie</h3><p>Une source fournit de l’énergie au système.</p><div class="schema-flux">' +
+        bloc('Alimenter', 'Fournir l’énergie nécessaire au fonctionnement du système.') + '<span class="schema-fleche">énergie →</span>' +
+        bloc('Distribuer', 'Commander le passage ou la quantité d’énergie envoyée à l’actionneur, selon l’ordre reçu. Dans un servomoteur, cette commande est intégrée à son électronique.') + '<span class="schema-fleche">énergie →</span>' +
+        bloc('Convertir', 'Transformer l’énergie en une autre forme. Un moteur transforme de l’énergie électrique en énergie mécanique.') + '<span class="schema-fleche">mouvement →</span>' +
+        bloc('Transmettre', 'Faire parvenir le mouvement à la pièce à déplacer, par exemple avec un axe ou une liaison mécanique.') + '</div>' +
+        '<p class="schema-action">→ <strong>Agir</strong> : réaliser l’action attendue, ici incliner le plateau pour déplacer la bille.</p></section>' +
+        '<p class="schema-legende">Dans le labyrinthe, les fils d’alimentation transportent l’énergie électrique. Les fils de signal transmettent les informations ou les ordres. L’électronique de chaque servomoteur commande son moteur.</p></figure>';
     }
 
     // Classement : cliquer (ou glisser) un élément, puis sa colonne.
