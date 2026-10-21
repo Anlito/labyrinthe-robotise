@@ -11,7 +11,7 @@
   'use strict';
 
   const enNode = typeof module === 'object' && module.exports;
-  const LB = enNode ? require('../../vendor/labo-blocs/labo-blocs-noyau.js') : global.LaboBlocs;
+  const LB = enNode ? require(require('../../../tools/dependances-tests.js').noyau) : global.LaboBlocs;
 
   function creerCatalogue() {
     let paquet = null;
@@ -63,7 +63,7 @@
     const path = require('node:path');
     const c = creerCatalogue();
     // Copie JSON : des objets de ce contexte (et non de celui du script).
-    vm.runInNewContext(fs.readFileSync(chemin || path.join(__dirname, '..', '..', 'parcours', chargerProjet().parcours + '.js'), 'utf8'), {
+    vm.runInNewContext(fs.readFileSync(chemin || require('../../../tools/dependances-tests.js').parcours, 'utf8'), {
       definirParcours: (p) => c.definirParcours(JSON.parse(JSON.stringify(p))),
     });
     return c;

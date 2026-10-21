@@ -2,7 +2,7 @@
 // lexique) et les fichiers modifiables par le professeur (site/donnees/).
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const LB = require('../site/vendor/labo-blocs/labo-blocs-noyau.js');
+const LB = require(require('../tools/dependances-tests.js').noyau);
 const { catalogue, projet, carnet, chargerDonnees } = require('../site/js/moteur/catalogue.js');
 const K = require('../site/js/moteur/carnet.js');
 const { chargerExercices } = require('./outils.js');

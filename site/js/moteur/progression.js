@@ -16,7 +16,7 @@
 
   const enNode = typeof module === 'object' && module.exports;
   const C = enNode ? require('./carnet.js') : global.Atelier;
-  const LB = enNode ? require('../../vendor/labo-blocs/labo-blocs-noyau.js') : global.LaboBlocs;
+  const LB = enNode ? require(require('../../../tools/dependances-tests.js').noyau) : global.LaboBlocs;
   const catalogue = () => (enNode ? require('./catalogue.js').catalogue : global.Atelier.catalogue);
 
   const PROJET = () => (enNode ? require('./catalogue.js').projet : global.Atelier.projet);

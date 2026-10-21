@@ -5,17 +5,14 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { zip } = require('../site/js/moteur/xlsx.js');
-const { projet } = require('../site/js/moteur/catalogue.js');
+let projet;
+require('node:vm').runInNewContext(fs.readFileSync(path.join(__dirname, '../site/donnees/projet.js'),'utf8'), {definirProjetAtelier:p=>{projet=p;}});
 
 const RACINE = path.join(__dirname, '..');
 const SITE = path.join(RACINE, 'site');
 const SORTIE = path.join(RACINE, 'dist');
 const DOSSIER = projet.id;
 
-if (!fs.existsSync(path.join(SITE, 'vendor', 'labo-blocs', 'blockly', 'blockly_compressed.js'))) {
-  console.error('Labo Blocs manque dans site/vendor : lancer « npm run labo-blocs ».');
-  process.exit(1);
-}
 
 const fichiers = [];
 (function parcourir(dossier, prefixe) {

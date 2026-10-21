@@ -25,13 +25,9 @@ test('évaluations professeur : persistance, export/import et rejet sans perdre 
  a.importer(texte);assert.equal(a.pour(equipe()).labyrinthe,3);
 });
 
-test('parcours en ligne : refuse une version incompatible, garde les exercices locaux et ne contacte rien en file://', async()=>{
- const code=fs.readFileSync(require('node:path').join(__dirname,'../site/js/parcours-en-ligne.js'),'utf8');
- let appels=0;const courant={id:'labyrinthe',versionParcours:'1.0.0'};
- const creer=protocol=>{
-  let brut={...courant};const A={projet:{id:'labyrinthe-robotise',parcours:'labyrinthe'},catalogue:{paquet:()=>({brut}),definirParcours:p=>{brut=p;}}};
-  return {Atelier:A,LaboBlocs:{VERSION_MOTEUR:'0.4.0',controler:p=>p.incompatible?['moteur trop ancien']:[],comparerVersions:(a,b)=>a.localeCompare(b),parcoursDefinis:[brut]},location:{protocol},localStorage:{getItem:()=>null,setItem:()=>{}},AbortController,setTimeout,clearTimeout,fetch:async()=>{appels++;return{ok:true,json:async()=>({id:'labyrinthe',versionParcours:'2.0.0',incompatible:true})}}};
- };
- const enLigne=creer('https:');vm.runInNewContext(code,enLigne);await enLigne.Atelier.parcoursPret;assert.equal(enLigne.Atelier.catalogue.paquet().brut.versionParcours,'1.0.0');assert.match(enLigne.Atelier.messageParcoursEnLigne,/mise à jour du module/);assert.equal(appels,1);
- const fichier=creer('file:');vm.runInNewContext(code,fichier);await fichier.Atelier.parcoursPret;assert.equal(appels,1);
+test('parcours central : accepte la source compatible et refuse un autre parcours',()=>{
+ const code=fs.readFileSync(require('node:path').join(__dirname,'../site/js/parcours-source.js'),'utf8');
+ const contexte=id=>({Atelier:{catalogue:{paquet:()=>({brut:{id},exercices:Array.from({length:8},(_,i)=>({numero:i+1}))})}},LaboBlocs:{VERSION_MOTEUR:'0.4.0',controler:()=>[]}});
+ const bon=contexte('labyrinthe');vm.runInNewContext(code,bon);assert.equal(bon.Atelier.origineParcours,'Labo Blocs en ligne');
+ assert.throws(()=>vm.runInNewContext(code,contexte('autre')),/indisponible/);
 });

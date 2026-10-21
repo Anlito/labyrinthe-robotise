@@ -7,7 +7,7 @@
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/atelier.css">
 <link rel="stylesheet" href="css/prof.css">
-<link rel="stylesheet" href="vendor/labo-blocs/labo-blocs.css">
+<link rel="stylesheet" href="https://anlito.github.io/labo-blocs/module/labo-blocs.css">
 <link rel="stylesheet" href="css/retro.css">
 </head>
 <body class="page-prof">
@@ -129,7 +129,7 @@
       <button type="button" class="btn-secondaire btn-retour-exercices" data-ic="retour">Retour</button>
       <div class="pe-titre">
         <h2 id="titre-exercices">Mettre à jour les exercices</h2>
-        <p class="pe-sous-titre">Les exercices de programmation viennent de Labo Blocs. Rien ne change sans votre validation.</p>
+        <p class="pe-sous-titre">Moteur et exercices sont chargés directement depuis Labo Blocs en ligne. Une connexion Internet est nécessaire.</p>
       </div>
     </div>
     <div class="mj-contenu" aria-live="polite"></div>
@@ -202,25 +202,26 @@
 </dialog>
 
 <!-- Labo Blocs : moteur (lecture des sauvegardes, parcours) et dessin des blocs -->
-<script src="vendor/labo-blocs/labo-blocs-noyau.js"></script>
-<script src="vendor/labo-blocs/labo-blocs-interface.js"></script>
-<script src="js/moteur/catalogue.js"></script>
-<script src="donnees/projet.js"></script>
-<script src="js/moteur/carnet.js"></script>
-<script src="js/moteur/progression.js"></script>
-<script src="js/moteur/notation.js"></script>
-<script src="js/moteur/classe.js"></script>
-<script src="js/moteur/xlsx.js"></script>
-<script src="parcours/labyrinthe.js"></script>
-<script src="js/parcours-en-ligne.js"></script>
-<script src="donnees/notation.js"></script>
-<script src="donnees/carnet.js"></script>
-<script src="js/labyrinthe/modele.js"></script>
-<script src="js/labyrinthe/dessin.js"></script>
-<script src="js/icones.js"></script>
-<script src="js/prof-dessins.js"></script>
-<script src="js/notes-prof.js"></script>
-<script src="js/prof.js"></script>
-<script src="js/mise-a-jour.js"></script>
+<script type="application/x-atelier" data-src="https://anlito.github.io/labo-blocs/module/labo-blocs-noyau.js"></script>
+<script type="application/x-atelier" data-src="https://anlito.github.io/labo-blocs/module/labo-blocs-interface.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/catalogue.js"></script>
+<script type="application/x-atelier" data-src="donnees/projet.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/carnet.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/progression.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/notation.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/classe.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/xlsx.js"></script>
+<script type="application/x-atelier" data-src="https://anlito.github.io/labo-blocs/parcours/labyrinthe/parcours.js"></script>
+<script type="application/x-atelier" data-src="js/parcours-source.js"></script>
+<script type="application/x-atelier" data-src="donnees/notation.js"></script>
+<script type="application/x-atelier" data-src="donnees/carnet.js"></script>
+<script type="application/x-atelier" data-src="js/labyrinthe/modele.js"></script>
+<script type="application/x-atelier" data-src="js/labyrinthe/dessin.js"></script>
+<script type="application/x-atelier" data-src="js/icones.js"></script>
+<script type="application/x-atelier" data-src="js/prof-dessins.js"></script>
+<script type="application/x-atelier" data-src="js/notes-prof.js"></script>
+<script type="application/x-atelier" data-src="js/prof.js"></script>
+<script type="application/x-atelier" data-src="js/mise-a-jour.js"></script>
+<script src="js/connexion-labo.js"></script>
 </body>
 </html>

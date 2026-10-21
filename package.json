@@ -7,9 +7,9 @@
     "test": "node --test tests/*.test.js",
     "start": "node tools/serve.js",
     "exemples": "node tools/exemples-equipes.js",
-    "recette": "node tools/recette.js",
+    "recette": "node tools/recette-centrale.js",
     "archive": "node tools/archive.js",
-    "labo-blocs": "node ../labo-blocs/tools/vers-projet.js ."
+    "pretest": "node tools/dependances-tests.js"
   },
   "devDependencies": {
     "puppeteer-core": "^25.13.0"

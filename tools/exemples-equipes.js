@@ -6,7 +6,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const LB = require('../site/vendor/labo-blocs/labo-blocs-noyau.js');
+const LB = require(require('./dependances-tests.js').noyau);
 const P = require('../site/js/moteur/progression.js');
 const { catalogue, projet, carnet: contenu } = require('../site/js/moteur/catalogue.js');
 const { chargerExercices } = require('../tests/outils.js');

@@ -3,7 +3,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 // Générateur C++ de Labo Blocs (le même que le panneau « Code » du niveau 3).
-const LB = require('../site/vendor/labo-blocs/labo-blocs-noyau.js');
+const LB = require(require('../tools/dependances-tests.js').noyau);
 const { chargerExercices } = require('./outils.js');
 
 const exercices = chargerExercices();

@@ -10,3 +10,5 @@ exemples/
 dist/
 # Bibliothèques Arduino du projet (recréées par « npm run firmware »)
 tools/arduino-libs/
+
+.cache/

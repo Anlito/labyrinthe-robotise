@@ -1,3 +1,7 @@
+# Connexion centrale à Labo Blocs
+
+Le projet utilise désormais directement le module et le parcours publiés sur Labo Blocs. Une connexion Internet est nécessaire, y compris avec le ZIP local. Il ne contient plus de moteur ni d’exercices embarqués. Après une publication de Labo Blocs, rechargez les pages. Les passages ci-dessous qui décrivaient l’installation de copies locales sont remplacés par ce fonctionnement.
+
 # Projet Labyrinthe robotisé — LISEZ-MOI (professeur)
 
 Le carnet de projet numérique du Labyrinthe robotisé (5e et 4e) : il remplace le dossier de travail papier et
@@ -31,7 +35,7 @@ et arrivée A marqués, parcours d'au moins 10 s.
 ## 2. Ouvrir le carnet
 
 **En ligne** : l'adresse ci-dessus. **Depuis le dossier réseau** : décompresser `labyrinthe-robotise.zip`, puis
-ouvrir `labyrinthe-robotise/index.html` (double-clic). Le site marche sans connexion internet.
+ouvrir `labyrinthe-robotise/index.html` (double-clic). Une connexion Internet est nécessaire.
 
 **Navigateurs** : Chrome ou Edge (obligatoires pour envoyer le programme dans la carte et pour l'enregistrement
 automatique). Firefox fonctionne pour le reste, mais « Enregistrer » y télécharge le fichier, à ranger à la main.
@@ -132,22 +136,9 @@ conservés sur le poste professeur, sans écrire dans le JSON de l'équipe. Util
 pour une sauvegarde durable, puis **Importer une sauvegarde** sur un autre poste. L'import fusionne les niveaux
 fournis avec ceux déjà présents et reprend le barème importé ; les niveaux déjà renseignés dans la sauvegarde remplacent ceux du poste.
 
-### Mettre à jour les exercices
+### Exercices en ligne
 
-**Sur le site en ligne**, à chaque ouverture, le parcours public « labyrinthe » est lu depuis Labo Blocs.
-Il faut **publier le parcours dans Labo Blocs** : une modification encore dans l'éditeur ne suffit pas.
-Une session déjà ouverte garde sa version jusqu'au rechargement. La dernière version compatible peut être
-mémorisée dans le navigateur. Sans connexion, la copie intégrée (ou la version mémorisée) reste utilisable.
-Si le nouveau parcours nécessite un moteur plus récent, l'outil professeur le signale et garde la version compatible :
-il faut alors mettre à jour le module partagé depuis le dépôt Labo Blocs, puis republier le projet.
-
-**Depuis le dossier réseau (`file://`)**, la copie intégrée sert et la mise à jour reste volontaire :
-
-Les exercices viennent de **Labo Blocs** : le site en garde une copie, `parcours/labyrinthe.js`. Bouton
-**« Exercices »** de `prof.html` : « Chercher en ligne » ou « Choisir un fichier… » (`labyrinthe-….labo-parcours.json`),
-les différences s'affichent, « Valider la mise à jour » puis choisir le dossier du site ; l'ancienne version est gardée
-dans `parcours/labyrinthe-precedent.js`. Le travail des élèves est protégé : blocs et réussites gardés, un exercice
-modifié apparaît « à revérifier ».
+Le moteur et le parcours proviennent de Labo Blocs. Publier dans Labo Blocs puis recharger les pages du projet. Le bouton Exercices indique les versions chargées. Sans connexion, un message permet de réessayer ; aucune sauvegarde élève n’est modifiée.
 
 ---
 

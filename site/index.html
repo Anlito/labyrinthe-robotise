@@ -6,7 +6,7 @@
 <title>Projet Labyrinthe robotisé</title>
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/atelier.css">
-<link rel="stylesheet" href="vendor/labo-blocs/labo-blocs.css">
+<link rel="stylesheet" href="https://anlito.github.io/labo-blocs/module/labo-blocs.css">
 <link rel="stylesheet" href="css/carnet.css">
 <link rel="stylesheet" href="css/labyrinthe.css">
 <link rel="stylesheet" href="css/retro.css">
@@ -109,37 +109,37 @@
 <div class="message-bref" role="status" hidden></div>
 
 <!-- Labo Blocs : Blockly, moteur et écran d'exercice (copiés dans le dépôt : aucun CDN) -->
-<script src="vendor/labo-blocs/blockly/blockly_compressed.js"></script>
-<script src="vendor/labo-blocs/blockly/fr.js"></script>
-<script src="vendor/labo-blocs/labo-blocs-noyau.js"></script>
-<script src="vendor/labo-blocs/labo-blocs-interface.js"></script>
+<script type="application/x-atelier" data-src="https://anlito.github.io/labo-blocs/module/blockly/blockly_compressed.js"></script>
+<script type="application/x-atelier" data-src="https://anlito.github.io/labo-blocs/module/blockly/fr.js"></script>
+<script type="application/x-atelier" data-src="https://anlito.github.io/labo-blocs/module/labo-blocs-noyau.js"></script>
+<script type="application/x-atelier" data-src="https://anlito.github.io/labo-blocs/module/labo-blocs-interface.js"></script>
 <!-- Réglages du collège (classes, chemin des dossiers) : copie de secours, puis version en ligne de Labo Blocs -->
-<script src="donnees/college.js"></script>
-<script>LaboBlocs.chargerCollegeEnLigne();</script>
+<script type="application/x-atelier" data-src="donnees/college.js"></script>
+<script type="application/x-atelier">LaboBlocs.chargerCollegeEnLigne();</script>
 <!-- Moteur de l'atelier : carnet de projet et progression de l'équipe -->
-<script src="js/moteur/catalogue.js"></script>
-<script src="donnees/projet.js"></script>
-<script src="js/moteur/carnet.js"></script>
-<script src="js/moteur/progression.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/catalogue.js"></script>
+<script type="application/x-atelier" data-src="donnees/projet.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/carnet.js"></script>
+<script type="application/x-atelier" data-src="js/moteur/progression.js"></script>
 <!-- Exercices (parcours de Labo Blocs, mis à jour depuis l'outil du professeur) et données du projet -->
-<script src="parcours/labyrinthe.js"></script>
-<script src="js/parcours-en-ligne.js"></script>
-<script src="donnees/classes.js"></script>
-<script src="donnees/carnet.js"></script>
+<script type="application/x-atelier" data-src="https://anlito.github.io/labo-blocs/parcours/labyrinthe/parcours.js"></script>
+<script type="application/x-atelier" data-src="js/parcours-source.js"></script>
+<script type="application/x-atelier" data-src="donnees/classes.js"></script>
+<script type="application/x-atelier" data-src="donnees/carnet.js"></script>
 <!-- « Mon labyrinthe » : dessiner le plateau et l’essayer (onglet Conception du carnet) -->
-<script src="js/labyrinthe/modele.js"></script>
-<script src="js/labyrinthe/dessin.js"></script>
-<script src="js/labyrinthe/physique.js"></script>
-<script src="js/labyrinthe/ecran.js"></script>
+<script type="application/x-atelier" data-src="js/labyrinthe/modele.js"></script>
+<script type="application/x-atelier" data-src="js/labyrinthe/dessin.js"></script>
+<script type="application/x-atelier" data-src="js/labyrinthe/physique.js"></script>
+<script type="application/x-atelier" data-src="js/labyrinthe/ecran.js"></script>
 <!-- Interface -->
-<script src="js/icones.js"></script>
-<script src="js/fichiers.js"></script>
-<script src="js/photos-eleves.js"></script>
-<script src="js/accueil.js"></script>
-<script src="js/session.js"></script>
-<script src="js/exercices.js"></script>
-<script src="js/carnet-ecran.js"></script>
-<script>
+<script type="application/x-atelier" data-src="js/icones.js"></script>
+<script type="application/x-atelier" data-src="js/fichiers.js"></script>
+<script type="application/x-atelier" data-src="js/photos-eleves.js"></script>
+<script type="application/x-atelier" data-src="js/accueil.js"></script>
+<script type="application/x-atelier" data-src="js/session.js"></script>
+<script type="application/x-atelier" data-src="js/exercices.js"></script>
+<script type="application/x-atelier" data-src="js/carnet-ecran.js"></script>
+<script type="application/x-atelier">
   Atelier.ajusterEchelle();
   addEventListener('resize', Atelier.ajusterEchelle);
   (async function () {
@@ -168,5 +168,6 @@
     });
   })();
 </script>
+<script src="js/connexion-labo.js"></script>
 </body>
 </html>

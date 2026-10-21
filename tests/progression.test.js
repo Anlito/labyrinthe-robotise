@@ -2,7 +2,7 @@
 // (identifiants stables « lab-01 »…) ; le carnet, l'outil du professeur et la notation le lisent par numéro.
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const LB = require('../site/vendor/labo-blocs/labo-blocs-noyau.js');
+const LB = require(require('../tools/dependances-tests.js').noyau);
 const P = require('../site/js/moteur/progression.js');
 const { catalogue } = require('../site/js/moteur/catalogue.js');
 

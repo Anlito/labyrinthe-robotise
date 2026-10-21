@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 // Le moteur est celui de Labo Blocs (module copié dans site/vendor/labo-blocs) : ces tests vérifient que les exercices
 // du labyrinthe (parcours site/parcours/labyrinthe.js) se corrigent comme prévu. Le simulateur lui-même est testé dans
 // le dépôt labo-blocs.
-const { creerSimulation, positionServo, valider, depuisBlockly, versBlockly } = require('../site/vendor/labo-blocs/labo-blocs-noyau.js');
+const { creerSimulation, positionServo, valider, depuisBlockly, versBlockly } = require(require('../tools/dependances-tests.js').noyau);
 const { chargerExercices, att, servo, prog, deuxAxes } = require('./outils.js');
 const faux = require('./programmes-faux.js');
 

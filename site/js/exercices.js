@@ -34,7 +34,7 @@
       session,
       paquet,
       projet: PROJET,
-      media: 'vendor/labo-blocs/blockly/media/',
+      media: 'https://anlito.github.io/labo-blocs/module/blockly/media/',
       retour: o.retour,
       toutDebloquer: o.toutDebloquer,
       solution: o.solution,
